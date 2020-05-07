@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "outDir": "./dist",
+        "module": "CommonJS",
+        "target": "ES2019",
+        "esModuleInterop": true
+    },
+    "include": [
+        "server.ts"
+    ]
+}
