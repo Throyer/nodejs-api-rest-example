@@ -1,5 +1,15 @@
-import { Get, JsonController, Param, QueryParam, Post, Body, Put, NotFoundError, Req, Res, OnUndefined, Delete } from "routing-controllers";
-import { Response } from "express";
+import { 
+    Get,
+    JsonController,
+    Param, QueryParam,
+    Post,
+    Body,
+    Put,
+    NotFoundError,
+    OnUndefined,
+    Delete
+} from "routing-controllers";
+
 import { getRepository, Repository } from "typeorm";
 import { Usuario } from "../models/Usuario";
 

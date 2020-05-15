@@ -2,10 +2,10 @@
   "name": "node-api-cabelim",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch ./ --exec ts-node server.ts -e ts"
+    "start": "nodemon --watch ./ --exec ts-node index.ts -e ts"
   },
   "keywords": [],
   "author": "",
