@@ -16,7 +16,7 @@
 ## Como executar:
 ```shell
 # Clone o projeto
-$ git clone git@github.com:Throyer/nodejs-typescript-typeorm-routing-controllers.git nodejs-crud && cd nodejs-crud
+$ git clone git@github.com:Throyer/nodejs-crud.git && cd nodejs-crud
 
 # Baixe as dependencias
 $ yarn install
