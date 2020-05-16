@@ -1,4 +1,4 @@
-import { 
+import {
     Get,
     JsonController,
     Param, QueryParam,
@@ -12,6 +12,7 @@ import {
 
 import { getRepository, Repository } from "typeorm";
 import { Usuario } from "../models/Usuario";
+import { Page } from "../shared/Page";
 
 @JsonController("/usuarios")
 export class UsuariosController {
@@ -19,15 +20,31 @@ export class UsuariosController {
     private repository: Repository<Usuario> = getRepository(Usuario);
 
     @Get()
-    index(@QueryParam("nome") nome: string) {
+    async index(@QueryParam("nome") nome: string, @QueryParam("page") page: number, @QueryParam("size") size: number) {
+
+        page = page ?? 1;
+        size = size ?? 10;
 
         const where: any = {};
 
+        const options = {
+            skip: (page - 1) * size,
+            take: size,
+            where
+        };
+
         if (nome) {
-            where.nome = nome;
+            options.where.nome = nome;
         }
-        
-        return this.repository.find({ where });
+
+        const [content, count] = await this.repository.findAndCount(options);
+
+        return new Page<Usuario>({
+            content,
+            count,
+            page,
+            size
+        });
     }
 
     @Get("/:id")
@@ -55,7 +72,7 @@ export class UsuariosController {
 
     @Delete("/:id")
     async destroy(@Param("id") id: number) {
-        
+
         return this.repository.delete(id);
     }
 
