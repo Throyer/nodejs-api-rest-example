@@ -1,3 +1,18 @@
-import start from "./src/app/App";
+import bodyParser from "body-parser";
+import express from "express";
+import "reflect-metadata";
+import { useExpressServer } from "routing-controllers";
+import { createConnection } from "typeorm";
 
-start();
+const port = 8080;
+
+createConnection().then(() => {
+    const app = express();
+
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+    useExpressServer(app, { routePrefix: `/api`, controllers: [__dirname + "/src/app/controllers/*.ts"] });
+
+    app.listen(port, () => console.info(`started on http://localhost:${port}/api`));
+})

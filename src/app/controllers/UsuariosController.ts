@@ -26,7 +26,7 @@ export class UsuariosController {
         if (nome) {
             where.nome = nome;
         }
-
+        
         return this.repository.find({ where });
     }
 
