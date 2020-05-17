@@ -6,13 +6,20 @@ import { createConnection } from "typeorm";
 
 const port = 8080;
 
-createConnection().then(() => {
-    const app = express();
+createConnection()
+    .then(() => {
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+        const app = express();
 
-    useExpressServer(app, { routePrefix: `/api`, controllers: [__dirname + "/src/app/controllers/*.ts"] });
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({ extended: true }));
 
-    app.listen(port, () => console.info(`started on http://localhost:${port}/api`));
-})
+        useExpressServer(app, {
+            validation: true,
+            routePrefix: `/api`,
+            controllers: [__dirname + "/src/app/controllers/*.ts"]
+        });
+
+        app.listen(port, () => console.info(`started on http://localhost:${port}/api`));
+    })
+    .catch(error => console.error(error));

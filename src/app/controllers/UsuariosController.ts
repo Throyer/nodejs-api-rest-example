@@ -20,10 +20,13 @@ export class UsuariosController {
     private repository: Repository<Usuario> = getRepository(Usuario);
 
     @Get()
-    async index(@QueryParam("nome") nome: string, @QueryParam("page") page: number, @QueryParam("size") size: number) {
+    async index(
+        @QueryParam("nome") nome: string,
+        @QueryParam("page") page: number = 1,
+        @QueryParam("size") size: number = 10
+    ): Promise<Page<Usuario>> {
 
-        page = page ?? 1;
-        size = size ?? 10;
+        if (page <= 0) page = 1;
 
         const where: any = {};
 
@@ -75,5 +78,4 @@ export class UsuariosController {
 
         return this.repository.delete(id);
     }
-
 }
