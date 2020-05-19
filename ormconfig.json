@@ -4,9 +4,15 @@
     "port": 3306,
     "username": "root",
     "password": "root",
-    "database": "express_db",
+    "database": "type_orm",
     "entities": [
         "src/app/models/*.ts"
     ],
-    "synchronize": true
+    "migrations": [
+        "migration/*.ts"
+    ],
+    "cli": {
+        "migrationsDir": "migration"
+    },
+    "logging": ["query", "error"]
 }
