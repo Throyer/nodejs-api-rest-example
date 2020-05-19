@@ -40,7 +40,10 @@ export class PermissoesController {
     }
 
     @Put("/:id")
-    async update(@Param("id") id: number, @Body() permissao: Permissao) {
+    async update(
+        @Param("id") id: number,
+        @Body() permissao: Permissao
+    ) {
 
         return { message: "Not implemented" };
     }

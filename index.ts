@@ -8,7 +8,6 @@ const port = 8080;
 
 createConnection()
     .then(() => {
-
         const app = express();
 
         app.use(bodyParser.json());
@@ -16,7 +15,7 @@ createConnection()
 
         useExpressServer(app, {
             validation: true,
-            routePrefix: `/api`,
+            routePrefix: "/api",
             controllers: [__dirname + "/src/app/controllers/*.ts"]
         });
 
