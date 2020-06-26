@@ -1,82 +1,62 @@
 import {
-    Get,
-    JsonController,
-    Param,
-    QueryParam,
-    Post,
-    Body,
-    Put,
-    NotFoundError,
-    OnUndefined,
-    Delete
+  Get,
+  JsonController,
+  Param,
+  Post,
+  Body,
+  Put,
+  NotFoundError,
+  OnUndefined,
+  Delete,
+  QueryParams,
 } from "routing-controllers";
-
-import { getRepository, Repository } from "typeorm";
-import { Usuario } from "../models/Usuario";
+import { Usuario } from "../models/entities/Usuario";
 import { Page } from "../shared/Page";
+import UsuarioQueryParams from "../models/queryParameters/UsuarioQueryParams";
+import UsuarioService from "../services/UsuarioService";
 
 @JsonController("/usuarios")
 export class UsuariosController {
+  constructor(private service: UsuarioService = new UsuarioService()) {}
 
-    private repository: Repository<Usuario> = getRepository(Usuario);
+  @Get()
+  async index(
+    @QueryParams() params: UsuarioQueryParams
+  ): Promise<Page<Usuario>> {
+    return await this.service.findAndPaginate(params);
+  }
 
-    @Get()
-    async index(
-        @QueryParam("nome") nome: string,
-        @QueryParam("page") page: number = 1,
-        @QueryParam("size") size: number = 10
-    ): Promise<Page<Usuario>> {
+  @Get("/:id")
+  @OnUndefined(404)
+  async show(@Param("id") id: number) {
+    return await this.service.findOne({ where: { id } });
+  }
 
-        if (page <= 0) page = 1;
+  @Post()
+  async store(@Body() usuario: Usuario) {
+    return this.service.save(usuario);
+  }
 
-        const where: any = {};
+  @Put("/:id")
+  async update(@Param("id") id: number, @Body() body: Usuario) {
+    const usuario = await this.service.findOne({ where: { id } });
 
-        const options = {
-            skip: (page - 1) * size,
-            take: size,
-            where
-        };
+    if (!usuario) throw new NotFoundError();
 
-        if (nome) {
-            options.where.nome = nome;
-        }
+    const { id: _id, senha: _senha, ...partial } = body;
 
-        const [content, count] = await this.repository.findAndCount(options);
+    const updated = await this.service.update(usuario, partial);
 
-        return new Page<Usuario>({
-            content,
-            count,
-            page,
-            size
-        });
-    }
+    return updated;
+  }
 
-    @Get("/:id")
-    @OnUndefined(404)
-    show(@Param("id") id: number) {
+  @Delete("/:id")
+  @OnUndefined(200)
+  async destroy(@Param("id") id: number): Promise<void> {
+    const usuario = await this.service.findOne({ where: { id } });
 
-        return this.repository.findOne(id);
-    }
+    if (!usuario) throw new NotFoundError();
 
-    @Post()
-    async store(@Body() usuario: Usuario) {
-
-        return this.repository.save(usuario);
-    }
-
-    @Put("/:id")
-    async update(@Param("id") id: number, @Body() usuario: Usuario) {
-
-        const _usuario = await this.repository.findOne(id);
-
-        if (!_usuario) throw new NotFoundError();
-
-        return this.repository.save(usuario);
-    }
-
-    @Delete("/:id")
-    async destroy(@Param("id") id: number) {
-
-        return this.repository.delete(id);
-    }
+    await this.service.deleteById(usuario.id);
+  }
 }

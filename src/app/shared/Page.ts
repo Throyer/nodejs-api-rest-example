@@ -1,28 +1,30 @@
-export class Page<T> {
-    content: T[]
-    page: number;
-    size: number;
-    totalPages: number;
-    totalElements: number;
+import Pagination from "./Pagination";
 
-    constructor(
-        {
-            content,
-            count,
-            page,
-            size
-        }:
-            {
-                content: T[],
-                count: number,
-                page: number,
-                size: number
-            }
-    ) {
-        this.content = content;
-        this.page = page;
-        this.size = size;
-        this.totalPages = Math.ceil(count / size)
-        this.totalElements = count;
-    }
+export interface PageableParams<T> {
+  /**
+   * Resultado da consulta no typeOrm (resultado da consulta junto com o count).
+   */
+  select: [T[], number];
+
+  /**
+   * Query Params com os parametros de paginação.
+   */
+  pageable: Pagination;
+}
+
+export class Page<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+
+  constructor({ select, pageable }: PageableParams<T>) {
+    const [content, count] = select;
+    this.content = content;
+    this.page = pageable.page;
+    this.size = pageable.size;
+    this.totalPages = Math.ceil(count / pageable.size);
+    this.totalElements = count;
+  }
 }

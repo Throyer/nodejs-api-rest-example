@@ -9,7 +9,7 @@ import {
     Delete,
     JsonController
 } from "routing-controllers";
-import { Permissao } from "../models/Permissao";
+import { Permissao } from "../models/entities/Permissao";
 
 @JsonController("/permissoes")
 export class PermissoesController {

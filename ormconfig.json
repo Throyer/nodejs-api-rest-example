@@ -6,7 +6,7 @@
     "password": "root",
     "database": "type_orm",
     "entities": [
-        "src/app/models/*.ts"
+        "src/app/models/**/*{.ts,.js}"
     ],
     "migrations": [
         "migration/*.ts"
