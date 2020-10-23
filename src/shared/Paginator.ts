@@ -1,11 +1,11 @@
 import { FindManyOptions } from "typeorm";
 
-export default abstract class Pagination {
+export default abstract class Paginator {
 
   page: number = 1;
   size: number = 10;
 
-  paginate<T>(options: FindManyOptions<T>): FindManyOptions<T> {
+  paginate<T>(options?: FindManyOptions<T>): FindManyOptions<T> {
     this.page = Number(this.page);
     this.size = Number(this.size);
 

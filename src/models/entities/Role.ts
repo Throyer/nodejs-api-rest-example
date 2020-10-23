@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity()
-export class Permissao {
+@Entity({ name: 'role' })
+export class Role {
 
     @PrimaryGeneratedColumn()
     id: number;
     
     @Column()
-    nome: string;
+    name: string;
     
 }

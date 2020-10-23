@@ -1,16 +1,16 @@
 import { Get, QueryParam, OnUndefined, Param, Post, Body, Put, Delete, JsonController } from "routing-controllers";
-import { Permissao } from "../models/entities/Permissao";
+import { Role } from "../models/entities/Role";
 
 @JsonController("/permissoes")
-export class PermissoesController {
+export class RolesController {
 
     @Get()
-    index(@QueryParam("nome") nome: string) {
+    index(@QueryParam("name") name: string) {
 
         const where: any = {};
 
-        if (nome) {
-            where.nome = nome;
+        if (name) {
+            where.name = name;
         }
 
         return [];
@@ -24,7 +24,7 @@ export class PermissoesController {
     }
 
     @Post()
-    async store(@Body() permissao: Permissao) {
+    async store(@Body() role: Role) {
 
         return { message: "Not implemented" };
     }
@@ -32,7 +32,7 @@ export class PermissoesController {
     @Put("/:id")
     async update(
         @Param("id") id: number,
-        @Body() permissao: Permissao
+        @Body() role: Role
     ) {
 
         return { message: "Not implemented" };

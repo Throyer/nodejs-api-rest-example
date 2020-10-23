@@ -2,5 +2,5 @@ import { FindManyOptions } from 'typeorm'
 
 export default interface Specification<T> {
 
-    getOptions(): FindManyOptions<T>
+    paginate(options?: FindManyOptions<T>): FindManyOptions<T>
 }

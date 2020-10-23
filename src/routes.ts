@@ -5,6 +5,6 @@ export const routes = (app: Express): void => {
     useExpressServer(app, {
         validation: true,
         routePrefix: "/api",
-        controllers: [__dirname + "/controllers/*.ts"]
+        controllers: [__dirname + "/controllers/**/*.ts"]
     });
 }

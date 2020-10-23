@@ -1,16 +1,16 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
-import { Permissao } from "./Permissao";
+import { Role } from "./Role";
 import { IsEmail, IsNotEmpty } from "class-validator";
 
-@Entity()
-export class Usuario {
+@Entity({ name: 'user' })
+export class User {
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @IsNotEmpty({ message: "Informe um nome." })
     @Column()
-    nome: string;
+    name: string;
 
     @IsEmail()
     @Column()
@@ -18,18 +18,18 @@ export class Usuario {
 
     @IsNotEmpty({ message: "Informe uma senha."})
     @Column()
-    senha: string;
+    password: string;
 
-    @ManyToMany(type => Permissao, { eager: true})
+    @ManyToMany(type => Role, { eager: true})
     @JoinTable({ 
-        name: "usuario_permissao",
+        name: "user_role",
         joinColumn: { 
-            name: "usuario_id"
+            name: "user_id"
         },
         inverseJoinColumn: {
-            name: "permissao_id"
+            name: "role_id"
         }
     })
-    permissoes: Permissao[];
+    roles: Role[];
 
 }
