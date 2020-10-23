@@ -1,14 +1,4 @@
-import { 
-    Get,
-    QueryParam,
-    OnUndefined,
-    Param,
-    Post,
-    Body,
-    Put,
-    Delete,
-    JsonController
-} from "routing-controllers";
+import { Get, QueryParam, OnUndefined, Param, Post, Body, Put, Delete, JsonController } from "routing-controllers";
 import { Permissao } from "../models/entities/Permissao";
 
 @JsonController("/permissoes")
@@ -50,7 +40,7 @@ export class PermissoesController {
 
     @Delete("/:id")
     async destroy(@Param("id") id: number) {
-        
+
         return { message: "Not implemented" };
     }
 }

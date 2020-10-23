@@ -10,17 +10,16 @@
 </p>
 
 ## Requisitos:
-- `NodeJS`
-- `MariaDB ou MySQL`
+- `nodejs`
+- `mariadb ou mysql`
 
 ## Como executar:
 ```shell
-# Clone o projeto
-$ git clone git@github.com:Throyer/nodejs-crud.git && cd nodejs-crud
+git clone git@github.com:Throyer/nodejs-crud.git && cd nodejs-crud
 
-# Baixe as dependencias
-$ yarn install
+cd nodejs-crud
 
-# Execute o servidor node
-$ yarn start
+yarn install
+
+yarn dev:server
 ```
