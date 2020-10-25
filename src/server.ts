@@ -3,12 +3,13 @@ import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 
+import { SERVER_PORT } from './config';
+
 import { routes } from './routes';
 import { started } from './utils/started';
 import { home } from './utils/home';
 
 import './database';
-import { SERVER_PORT } from './config';
 
 const app = express();
 

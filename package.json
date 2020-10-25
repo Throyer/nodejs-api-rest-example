@@ -13,7 +13,10 @@
 		"migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
 		"migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show",
 		"migration:revert": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert",
-		"migration:restart": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop && ts-node-dev ./node_modules/typeorm/cli.js migration:run"
+		"migration:restart": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop && ts-node-dev ./node_modules/typeorm/cli.js migration:run",
+		"docker:up": "docker-compose up --build -d",
+		"docker:stop": "docker-compose stop",
+		"docker:down": "docker-compose down"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
