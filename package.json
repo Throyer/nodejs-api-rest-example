@@ -6,14 +6,14 @@
 	"scripts": {
 		"start": "node dist/server.js",
 		"dev": "ts-node-dev --inspect --transpile-only --ignore node_modules src/server.ts",
+		"prestart": "rm -rf ./dist && tsc",
 		"typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
 		"migration:generate": "ts-node-dev ./node_modules/typeorm/cli.js migration:generate",
 		"migration:create": "ts-node-dev ./node_modules/typeorm/cli.js migration:create -n",
 		"migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
 		"migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show",
 		"migration:revert": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert",
-		"migration:restart": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop && ts-node-dev ./node_modules/typeorm/cli.js migration:run",
-		"prestart": "rm -rf ./dist && tsc"
+		"migration:restart": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop && ts-node-dev ./node_modules/typeorm/cli.js migration:run"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
