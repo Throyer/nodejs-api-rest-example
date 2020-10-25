@@ -1,5 +1,5 @@
 import { Get, QueryParam, OnUndefined, Param, Post, Body, Put, Delete, JsonController } from "routing-controllers";
-import { Role } from "../models/entities/Role";
+import { Role } from "../models/Role";
 
 @JsonController("/permissoes")
 export class RolesController {

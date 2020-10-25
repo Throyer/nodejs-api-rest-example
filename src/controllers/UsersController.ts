@@ -12,21 +12,26 @@ import {
 	QueryParams
 } from "routing-controllers";
 
-import UserParams from "../models/queryParameters/UserParams";
+import UserParams from "../queryParams/UserParams";
 
-import { User } from "../models/entities/User";
+import CreateUserService, { CreateUserProps } from "../services/CreateUserService";
+
 import { Page } from "../shared/Page";
+import { User } from "../models/User";
+import { paginate } from "../utils/paginate";
+import UpdateUserService from "../services/UpdateUserService";
 
 @JsonController("/users")
 export class UsersController {
 	
 	repository: Repository<User> = getRepository(User);
 
+	createUserService = new CreateUserService();
+	updateUserService = new UpdateUserService();
+
 	@Get()
 	async index(@QueryParams() pageable: UserParams): Promise<Page<User>> {
-		const options = pageable.paginate();
-		const select = await this.repository.findAndCount(options);
-		return new Page({ select, pageable })
+		return await paginate(this.repository, pageable);
 	}
 
 	@Get("/:id")
@@ -36,24 +41,13 @@ export class UsersController {
 	}
 
 	@Post()
-	async store(@Body() user: User) {
-		return this.repository.save(user);
+	async store(@Body() user: CreateUserProps) {
+		return this.createUserService.create(user);
 	}
 
 	@Put("/:id")
-	async update(@Param("id") id: number, @Body() body: User) {
-		
-		const user = await this.repository.findOne({ where: { id } });
-
-		if (!user) throw new NotFoundError();
-
-		const { id: _id, password: _password, ...partial } = body;
-
-		this.repository.merge(user, partial);
-
-		const updated = await this.repository.save(user);
-
-		return updated;
+	async update(@Param("id") id: number, @Body() body: User) {		
+		return this.updateUserService.update(body)
 	}
 
 	@Delete("/:id")

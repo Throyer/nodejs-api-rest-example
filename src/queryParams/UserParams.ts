@@ -1,7 +1,7 @@
 import { FindManyOptions, Like, FindConditions } from "typeorm";
-import Specification from "../../shared/Specification";
+import Specification from "../shared/Specification";
 import { User } from "../entities/User";
-import Paginator from "../../shared/Paginator";
+import Paginator from "../shared/Paginator";
 
 export default class UserParams extends Paginator
 
