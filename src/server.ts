@@ -5,7 +5,7 @@ import cors from "cors";
 
 import { routes } from "./routes";
 import { started } from "./utils/started";
-import { working } from "./utils/working";
+import { home } from "./utils/home";
 
 import "./database";
 
@@ -18,6 +18,6 @@ app.use(express.json());
 
 routes(app);
 
-app.get('/', working);
+app.get('/', home);
 
 app.listen(SERVER_PORT, () => started(SERVER_PORT));
