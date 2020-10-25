@@ -10,6 +10,6 @@ RUN yarn install --production
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE ${SERVER_PORT}
 
 CMD [ "npm", "run", "start" ]

@@ -1,15 +1,14 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
 
-import { routes } from "./routes";
-import { started } from "./utils/started";
-import { home } from "./utils/home";
+import { routes } from './routes';
+import { started } from './utils/started';
+import { home } from './utils/home';
 
-import "./database";
-
-const SERVER_PORT = Number(process.env.SERVER_PORT ?? 4000);
+import './database';
+import { SERVER_PORT } from './config';
 
 const app = express();
 

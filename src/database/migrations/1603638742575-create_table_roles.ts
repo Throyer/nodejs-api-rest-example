@@ -8,7 +8,7 @@ export class createTableRoles1603638742575 implements MigrationInterface {
             columns: [
                 {
                     name: 'id',
-                    type: 'bigint',
+                    type: 'int',
                     generationStrategy: 'increment',
                     isPrimary: true,
                     isGenerated: true,

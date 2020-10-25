@@ -4,14 +4,28 @@ import { User } from "../models/User";
 import { HttpStatus } from "../shared/HttpStatus";
 
 import HttpStatusError from "../errors/HttpStatusError";
+import { IsArray, IsEmail, IsNotEmpty, IsNumber } from "class-validator";
 
-export interface CreateUserProps {
+class RoleDTO {
+
+    @IsNotEmpty()
+    @IsNumber()
+    id: number;
+}
+
+export class CreateUserProps {
+    
+    @IsNotEmpty({ message: 'Informe um nome.' })
     name: string;
+    
+    @IsEmail()
     email: string;
+    
+    @IsNotEmpty({ message: 'Informe uma senha.' })
     password: string;
-    roles: {
-        id: number
-    }[]
+
+    @IsArray()
+    roles: RoleDTO[]
 }
 
 export default class CreateUserService {

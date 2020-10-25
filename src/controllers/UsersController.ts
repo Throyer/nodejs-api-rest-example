@@ -1,4 +1,7 @@
-import { getRepository, Repository } from 'typeorm';
+import {
+	getRepository,
+	Repository
+} from 'typeorm';
 import {
 	Get,
 	JsonController,
@@ -6,21 +9,25 @@ import {
 	Post,
 	Body,
 	Put,
-	NotFoundError,
 	OnUndefined,
 	Delete,
-	QueryParams
+	QueryParams,
+	OnNull,
+	Authorized
 } from 'routing-controllers';
 
-import UserParams from '../queryParams/UserParams';
+import UserParams from '../web/UserParams';
 
-import CreateUserService, { CreateUserProps } from '../services/CreateUserService';
+import CreateUserService,
+	{ CreateUserProps }
+from '../services/CreateUserService';
+
+import UpdateUserService from '../services/UpdateUserService';
 
 import { Page } from '../shared/Page';
 import { User } from '../models/User';
-import { paginate } from '../utils/paginate';
-import UpdateUserService from '../services/UpdateUserService';
 
+@Authorized(['ADM'])
 @JsonController('/users')
 export class UsersController {
 	
@@ -31,7 +38,16 @@ export class UsersController {
 
 	@Get()
 	async index(@QueryParams() pageable: UserParams): Promise<Page<User>> {
-		return await paginate(this.repository, pageable);
+		const options = pageable.paginate<User>({
+			select: [
+				"id",
+				"name",
+				"email"
+			],
+			relations: ["roles"]
+		});
+		const select = await this.repository.findAndCount(options);
+		return new Page({ select, pageable });
 	}
 
 	@Get('/:id')
@@ -52,11 +68,12 @@ export class UsersController {
 
 	@Delete('/:id')
 	@OnUndefined(200)
+	@OnNull(404)
 	async destroy(@Param('id') id: number): Promise<void> {
 
 		const user = await this.repository.findOne({ where: { id } });
 
-		if (!user) throw new NotFoundError();
+		if (!user) return null;
 
 		await this.repository.delete(user.id);
 	}

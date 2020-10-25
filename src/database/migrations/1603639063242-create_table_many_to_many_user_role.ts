@@ -8,26 +8,32 @@ export class createTableManyToManyUserRole1603639063242 implements MigrationInte
             columns: [
                 {
                     name: 'user_id',
-                    type: 'bigint'
+                    type: 'int',
+                    isNullable: true,
                 },
                 {
                     name: 'role_id',
-                    type: 'bigint'
+                    type: 'int',
+                    isNullable: true,
                 }
             ],
             foreignKeys: [
                 {
-                    name: 'user_id_fk',
-                    referencedTableName: 'user',
+                    name: 'user_fk',
+                    columnNames: ['user_id'],
                     referencedColumnNames: ['id'],
-                    columnNames: ['user_id']
+                    referencedTableName: 'user',
+                    onDelete: "SET NULL",
+                    onUpdate: "CASCADE",
                 },
                 {
-                    name: 'role_id_fk',
-                    referencedTableName: 'role',
+                    name: 'role_fk',
+                    columnNames: ['role_id'],
                     referencedColumnNames: ['id'],
-                    columnNames: ['role_id']
-                }
+                    referencedTableName: 'role',
+                    onDelete: "SET NULL",
+                    onUpdate: "CASCADE",
+                },
             ]
         }));
     }

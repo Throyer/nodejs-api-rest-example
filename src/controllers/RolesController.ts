@@ -7,12 +7,14 @@ import {
     Body,
     Put,
     Delete,
-    JsonController
+    JsonController,
+    Authorized
 } from 'routing-controllers';
 import { Role } from '../models/Role';
 import { Page } from '../shared/Page';
 
-@JsonController('/permissoes')
+@Authorized(['ADM'])
+@JsonController('/roles')
 export class RolesController {
 
     @Get()
