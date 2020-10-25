@@ -35,7 +35,10 @@ export const AuthorizationChecker = async (action: Action, requirements: string[
         );
     }
 
-    if (roles.every(role => requirements.every(required => required !== role))) {
+    if (requirements.length &&
+        roles.every(
+            role => requirements.every(
+                required => required !== role))) {
         throw new HttpStatusError(
             'Permissão invalida para este recurso.',
             HttpStatus.FORBIDDEN
