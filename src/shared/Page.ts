@@ -20,7 +20,14 @@ export class Page<T> {
 	totalPages: number;
 	totalElements: number;
 
-	constructor({ select, pageable }: PageableParams<T>) {
+	constructor({ select, pageable }: PageableParams<T> = {
+		select: [[], 0],
+		pageable: {
+			page: 1,
+			size: 10,
+			paginate: () => undefined
+		}
+	}) {
 
 		const [content, count] = select;
 		this.content = content;
