@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="www.google.com"><img width="200" src="./assets/node.png"></a>
+    <a href="www.google.com"><img width="300" src="./assets/node.png"></a>
 </p>
 <br>
     <h1 align="center">NodeJS + Typescript + TypeOrm</h1>
