@@ -14,8 +14,8 @@ export const CurrentUserChecker = async (action: Action): Promise<Session> => {
 
     if (!header) {
         throw new HttpStatusError(
+            HttpStatus.UNAUTHORIZED,
             'JWT não esta presente no header.',
-            HttpStatus.UNAUTHORIZED
         );
     }
 
@@ -32,8 +32,8 @@ export const CurrentUserChecker = async (action: Action): Promise<Session> => {
         
     } catch {
         throw new HttpStatusError(
+            HttpStatus.UNAUTHORIZED,
             'Token expirado ou invalido.',
-            HttpStatus.UNAUTHORIZED
         );
     }    
 }

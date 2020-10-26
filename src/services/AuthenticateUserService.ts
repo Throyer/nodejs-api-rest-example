@@ -45,13 +45,19 @@ export default class AuthenticateUserService {
         const user = await this.repository.findOne({ where: { email }, relations: ["roles"] });
 
         if (!user) {
-            throw new HttpStatusError("Email ou senha incorreto.", HttpStatus.UNAUTHORIZED);
+            throw new HttpStatusError(
+                HttpStatus.UNAUTHORIZED,
+                'Email ou senha incorretos.'
+            );
         }
 
         const match = await compare(password, user.password);
 
         if (!match) {
-            throw new HttpStatusError("Email ou senha incorreto.", HttpStatus.UNAUTHORIZED);
+            throw new HttpStatusError(
+                HttpStatus.UNAUTHORIZED,
+                'Email ou senha incorretos.'
+            );
         }
         const roles = user.roles.map(role => role.initials);
     

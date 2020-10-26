@@ -13,8 +13,8 @@ export const AuthorizationChecker = async (action: Action, requirements: string[
 
     if (!header) {
         throw new HttpStatusError(
+            HttpStatus.UNAUTHORIZED,
             'JWT não esta presente no header.',
-            HttpStatus.UNAUTHORIZED
         );
     }
 
@@ -30,8 +30,8 @@ export const AuthorizationChecker = async (action: Action, requirements: string[
         
     } catch {
         throw new HttpStatusError(
+            HttpStatus.UNAUTHORIZED,
             'Token expirado ou invalido.',
-            HttpStatus.UNAUTHORIZED
         );
     }
 
@@ -40,8 +40,8 @@ export const AuthorizationChecker = async (action: Action, requirements: string[
             role => requirements.every(
                 required => required !== role))) {
         throw new HttpStatusError(
+            HttpStatus.FORBIDDEN,
             'Permissão invalida para este recurso.',
-            HttpStatus.FORBIDDEN
         );
     }
 

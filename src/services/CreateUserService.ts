@@ -39,7 +39,10 @@ export default class CreateUserService {
         });
 
         if (exists) {
-            throw new HttpStatusError("Email já utilizado.", HttpStatus.BAD_REQUEST);
+            throw new HttpStatusError(
+                HttpStatus.BAD_REQUEST,
+                'Email já utilizado.'
+            );
         }
 
         const user = await this.repository.save({
