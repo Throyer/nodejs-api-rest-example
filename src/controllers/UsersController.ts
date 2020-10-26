@@ -22,7 +22,7 @@ import CreateUserService,
 	{ CreateUserProps }
 from '../services/CreateUserService';
 
-import UpdateUserService from '../services/UpdateUserService';
+import UpdateUserService, { UpdateUserProps } from '../services/UpdateUserService';
 
 import { Page } from '../shared/Page';
 import { User } from '../models/User';
@@ -53,7 +53,15 @@ export class UsersController {
 	@Get('/:id')
 	@OnUndefined(404)
 	async show(@Param('id') id: number) {
-		return await this.repository.findOne({ where: { id } });
+		return await this.repository.findOne({
+			where: { id },
+			select: [
+				"id",
+				"name",
+				"email"
+			],
+			relations: ["roles"]
+		});
 	}
 
 	@Post()
@@ -62,8 +70,11 @@ export class UsersController {
 	}
 
 	@Put('/:id')
-	async update(@Param('id') id: number, @Body() body: User) {		
-		return this.updateUserService.update(body)
+	async update(
+		@Param('id') id: number,
+		@Body() user: UpdateUserProps
+	) {		
+		return this.updateUserService.update(id, user)
 	}
 
 	@Delete('/:id')
@@ -73,7 +84,9 @@ export class UsersController {
 
 		const user = await this.repository.findOne({ where: { id } });
 
-		if (!user) return null;
+		if (!user) {
+			return null
+		}
 
 		await this.repository.delete(user.id);
 	}
