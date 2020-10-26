@@ -27,9 +27,9 @@
 > ```
 
 ```shell
-git clone git@github.com:Throyer/nodejs-crud.git
+git clone git@github.com:Throyer/nodejs-api-crud.git node-crud
 
-cd nodejs-crud
+cd node-crud
 
 yarn install
 
