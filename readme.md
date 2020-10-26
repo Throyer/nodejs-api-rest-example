@@ -14,7 +14,7 @@
 - `mariadb ou mysql`
 
 ## Como executar:
-> antes de executar, certifique-se de criar um arquivo .env na raiz do projeto com as variaveis do seu ambiente e atualize o banco de dados com as migrações. [(mais informações sobre as migrações aqui)]()
+> antes de executar, certifique-se de criar um arquivo .env na raiz do projeto com as variaveis do seu ambiente e atualize o banco de dados com as migrações. [(mais informações sobre as migrações aqui)](https://github.com/Throyer/nodejs-crud#migra%C3%A7%C3%B5es)
 
 ```shell
 git clone git@github.com:Throyer/nodejs-crud.git && cd nodejs-crud
