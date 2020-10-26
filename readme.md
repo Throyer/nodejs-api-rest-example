@@ -2,7 +2,7 @@
     <a href="www.google.com"><img width="300" src="./assets/node.png"></a>
 </p>
 <br>
-    <h1 align="center">NodeJS + Typescript + TypeOrm</h1>
+    <h1 align="center">Node API + Typescript + TypeOrm + JWT + MariaDB</h1>
 <br>
 <br>
 <p>
