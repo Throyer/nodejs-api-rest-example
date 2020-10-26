@@ -19,7 +19,8 @@ export class createTableRoles1603638742575 implements MigrationInterface {
                 },
                 {
                     name: 'initials',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isUnique: true,
                 }
             ]
         }));
