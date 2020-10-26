@@ -1,8 +1,8 @@
 <p align="center">
-    <a href="www.google.com"><img width="200" src="./assets/node.png"></a>
+    <a href="www.google.com"><img width="300" src="./assets/node.png"></a>
 </p>
 <br>
-    <h1 align="center">NodeJS + Typescript + TypeOrm</h1>
+    <h1 align="center">Node API + Typescript + TypeOrm + JWT + MariaDB</h1>
 <br>
 <br>
 <p>
@@ -27,16 +27,16 @@
 > ```
 
 ```shell
-git clone git@github.com:Throyer/nodejs-crud.git
+git clone git@github.com:Throyer/nodejs-api-crud.git node-crud
 
-cd nodejs-crud
+cd node-crud
 
 yarn install
 
 yarn dev
 ```
 # Coleção `json` no postman
-Você pode encontrar a coleção no postman com algumas variaveis setadas [aqui](./assets/node_api.json)
+Você pode encontrar a coleção no postman com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
 
 # Docker
 ```
