@@ -36,7 +36,7 @@ yarn install
 yarn dev
 ```
 # Coleção `json` no postman
-Você pode encontrar a coleção no postman com algumas variaveis setadas [aqui](./assets/node_api.json)
+Você pode encontrar a coleção no postman com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
 
 # Docker
 ```
