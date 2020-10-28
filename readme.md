@@ -24,9 +24,9 @@
 - `mariadb ou mysql`
 
 ## Como executar:
-> antes de executar, certifique-se de criar um arquivo `.env` na raiz do projeto com as variaveis do seu ambiente e atualize o banco de dados com as migrações com o comando: `yarn migration:run`
+> antes de executar, certifique-se de atualizar o arquivo `.env` na raiz do projeto com as variaveis do seu ambiente e atualize o banco de dados com as migrações com o comando: `yarn migration:run`
 >
-> [(mais informações sobre as migrações aqui)](https://github.com/Throyer/nodejs-crud#migra%C3%A7%C3%B5es)
+> [(mais informações sobre as migrações aqui)](#migrações)
 > 
 > As migrações iniciais criam um usuario administrador.
 > ```json
@@ -36,12 +36,16 @@
 > }
 > ```
 
-```shell
+```sh
 git clone git@github.com:Throyer/nodejs-api-crud.git node-crud
 
 cd node-crud
 
 yarn install
+
+cp .env.example .env
+
+yarn migration:run 
 
 yarn dev
 ```
@@ -49,7 +53,7 @@ yarn dev
 Você pode encontrar a coleção `json` no postman com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
 
 ## Docker
-```
+```sh
 # subir container
 yarn docker:up
 
@@ -62,7 +66,7 @@ yarn docker:down
 
 ## Migrações
 
-```
+```sh
 # criar migração a partir de mudanças nos modelos
 yarn migration:generate
 
