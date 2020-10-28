@@ -1,13 +1,23 @@
+<br />
 <p align="center">
-    <a href="www.google.com"><img width="300" src="./assets/node.png"></a>
+  <a href="https://github.com/Throyer/nodejs-api-crud">
+    <img src="./assets/node.png" alt="Logo" height="300">
+  </a>
+
+  <h3 align="center">CRUD API - Node Js</h3>
+
+  <p align="center">
+    Typescript, Typeorm, JWT, Routing Controllers e MariaDB
+    <br />
+  </p>
 </p>
-<br>
-    <h1 align="center">Node API + Typescript + TypeOrm + JWT + MariaDB</h1>
-<br>
-<br>
-<p>
-    Projeto simples de crud com TypeOrm.
-</p>
+
+## Table of Contents
+- [Requisitos](#requisitos)
+- [Como executar](#como-executar)
+- [Coleção no postman](#coleção-no-postman)
+- [Docker](#docker)
+- [Migrações](#migrações)
 
 ## Requisitos:
 - `nodejs`
@@ -35,8 +45,8 @@ yarn install
 
 yarn dev
 ```
-## Coleção `json` no postman
-Você pode encontrar a coleção no postman com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
+## Coleção no postman
+Você pode encontrar a coleção `json` no postman com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
 
 ## Docker
 ```
