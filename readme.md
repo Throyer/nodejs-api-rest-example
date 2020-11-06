@@ -13,6 +13,7 @@
 </p>
 
 ## Table of Contents
+
 - [Requisitos](#requisitos)
 - [Como executar](#como-executar)
 - [Coleção no postman](#coleção-no-postman)
@@ -20,19 +21,22 @@
 - [Migrações](#migrações)
 
 ## Requisitos:
+
 - `nodejs`
 - `mariadb ou mysql`
 
 ## Como executar:
+
 > antes de executar, certifique-se de atualizar o arquivo `.env` na raiz do projeto com as variaveis do seu ambiente e atualize o banco de dados com as migrações com o comando: `yarn migration:run`
 >
 > [(mais informações sobre as migrações aqui)](#migrações)
-> 
+>
 > As migrações iniciais criam um usuario administrador.
+>
 > ```json
 > {
->     "email": "admin@email.com",
->     "password": "admin"
+>   "email": "admin@email.com",
+>   "password": "admin"
 > }
 > ```
 
@@ -45,14 +49,17 @@ yarn install
 
 cp .env.example .env
 
-yarn migration:run 
+yarn migration:run
 
 yarn dev
 ```
+
 ## Coleção no postman
+
 Você pode encontrar a coleção `json` no **postman**/**insomnia** com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
 
 ## Docker
+
 ```sh
 # subir container
 yarn docker:up
@@ -65,6 +72,10 @@ yarn docker:down
 ```
 
 ## Migrações
+
+<p align="center">
+  <img src="./assets/crud_node_deer.png" alt="Logo" height="200">
+</p>
 
 ```sh
 # criar migração a partir de mudanças nos modelos
