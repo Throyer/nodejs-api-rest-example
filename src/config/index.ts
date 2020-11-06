@@ -1,21 +1,20 @@
-import path from 'path'
+import path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: path.join(__dirname, '..', '..', '.env') });
 
-const SERVER_PORT = Number(process.env.SERVER_PORT); 
+const {
+    DB_HOST,
+    DB_PORT,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_NAME,
+    TOKEN_SECRET,
+    TOKEN_EXPIRATION,
+} = process.env;
 
-// # database
-const DB_HOST = process.env.DB_HOST; 
-const DB_PORT = process.env.DB_PORT; 
-const DB_USERNAME = process.env.DB_USERNAME; 
-const DB_PASSWORD = process.env.DB_PASSWORD; 
-const DB_NAME = process.env.DB_NAME; 
-const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL.split(','); 
-
-// # token
-const TOKEN_SECRET = process.env.TOKEN_SECRET; 
-const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION; 
+const SERVER_PORT = Number(process.env.SERVER_PORT);
+const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL.split(',');
 
 export {
     SERVER_PORT,
@@ -27,4 +26,4 @@ export {
     DB_LOGGING_LEVEL,
     TOKEN_SECRET,
     TOKEN_EXPIRATION,
-}
+};
