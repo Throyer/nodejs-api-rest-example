@@ -7,7 +7,7 @@
   <h3 align="center">CRUD API - Node Js</h3>
 
   <p align="center">
-    Typescript, Typeorm, JWT, swagger, Routing Controllers e MariaDB
+    Docker, Typescript, Typeorm, JWT, swagger, Routing Controllers e MariaDB
     <br />
   </p>
 </p>
