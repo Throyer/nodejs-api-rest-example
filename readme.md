@@ -50,7 +50,7 @@ yarn migration:run
 yarn dev
 ```
 ## Coleção no postman
-Você pode encontrar a coleção `json` no postman com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
+Você pode encontrar a coleção `json` no **postman**/**insomnia** com algumas variaveis setadas [aqui](./assets/postman/node_api.json)
 
 ## Docker
 ```sh
