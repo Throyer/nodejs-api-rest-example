@@ -83,5 +83,5 @@ yarn migration:show
 yarn migration:revert
 
 # resetar o schema (cuidado este comando limpa a base e cria novamente)
-yarn migration:restart
+yarn migration:create-drop
 ```
