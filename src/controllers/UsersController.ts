@@ -1,4 +1,5 @@
 import {
+	FindConditions,
 	getRepository,
 	Repository
 } from 'typeorm';
@@ -38,13 +39,21 @@ export class UsersController {
 
 	@Get()
 	async index(@QueryParams() pageable: UserParams): Promise<Page<User>> {
+		
+		const where: FindConditions<User> = {};
+
+		if (pageable.name) {
+			where.name = pageable.name;
+		}
+
 		const options = pageable.paginate<User>({
 			select: [
 				"id",
 				"name",
 				"email"
 			],
-			relations: ["roles"]
+			relations: ["roles"],
+			where,
 		});
 		const select = await this.repository.findAndCount(options);
 		return new Page({ select, pageable });
