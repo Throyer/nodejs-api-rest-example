@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 
-export const home = (req: Request, res: Response): 
-    Response<{ message: string }> => res.json({
-        message: "Is a live!"
-    });
+type Greeting = {
+  message: string;
+};
+
+export const home = (_req: Request, res: Response): Response<Greeting> =>
+  res.json({
+    message: 'Is a live!',
+  });

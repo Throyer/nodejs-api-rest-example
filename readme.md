@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Throyer/nodejs-api-crud">
-    <img src="./assets/node.png" alt="Logo" height="300">
+    <!-- <img src="./assets/node.png" alt="Logo" height="300"> -->
   </a>
 
   <h3 align="center">CRUD API - Node Js</h3>
@@ -23,7 +23,7 @@
 ## Requisitos:
 
 - `nodejs`
-- `mariadb ou mysql`
+- `postgres`
 
 ## Como executar:
 
@@ -69,6 +69,12 @@ yarn docker:stop
 
 # remover container
 yarn docker:down
+
+# rodar os seeds
+yarn seed:run
+
+# criar novo arquivo de seeds
+yarn seed:create
 ```
 
 ## Migrações

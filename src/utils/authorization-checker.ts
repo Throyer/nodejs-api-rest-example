@@ -1,49 +1,48 @@
 import { Action } from 'routing-controllers';
-import { verify } from "jsonwebtoken";
+import { verify } from 'jsonwebtoken';
 
-import { HttpStatus } from '../shared/HttpStatus';
-import { TOKEN_SECRET } from '../config';
+import { TOKEN_SECRET } from '@config/env';
+import { HttpStatus } from '@shared/web/HttpStatus';
+import { Token } from '@shared/auth/Token';
+import { HttpStatusError } from '@errors/HttpStatusError';
 
-import HttpStatusError from '../errors/HttpStatusError';
-import Token from '../shared/Token';
+export const AuthorizationChecker = async (
+  action: Action,
+  requirements: string[],
+): Promise<boolean> => {
+  const header = action.request.headers.authorization;
 
-export const AuthorizationChecker = async (action: Action, requirements: string[]): Promise<boolean> => {
-    
-    const header = action.request.headers.authorization;
+  if (!header) {
+    throw new HttpStatusError(
+      HttpStatus.UNAUTHORIZED,
+      'JWT não esta presente no header.',
+    );
+  }
 
-    if (!header) {
-        throw new HttpStatusError(
-            HttpStatus.UNAUTHORIZED,
-            'JWT não esta presente no header.',
-        );
-    }
+  const [, token] = header.split(' ');
 
-    const [, token] = header.split(' ');
+  let roles: string[] = [];
 
-    let roles: string[] = [];
+  try {
+    const jwt = verify(token, TOKEN_SECRET) as Token;
 
-    try {
+    roles = jwt.roles;
+  } catch {
+    throw new HttpStatusError(
+      HttpStatus.UNAUTHORIZED,
+      'Token expirado ou invalido.',
+    );
+  }
 
-        const jwt = verify(token, TOKEN_SECRET) as Token;
+  if (
+    requirements.length &&
+    roles.every(role => requirements.every(required => required !== role))
+  ) {
+    throw new HttpStatusError(
+      HttpStatus.FORBIDDEN,
+      'Permissão invalida para este recurso.',
+    );
+  }
 
-        roles = jwt.roles;
-        
-    } catch {
-        throw new HttpStatusError(
-            HttpStatus.UNAUTHORIZED,
-            'Token expirado ou invalido.',
-        );
-    }
-
-    if (requirements.length &&
-        roles.every(
-            role => requirements.every(
-                required => required !== role))) {
-        throw new HttpStatusError(
-            HttpStatus.FORBIDDEN,
-            'Permissão invalida para este recurso.',
-        );
-    }
-
-    return true;
-}
+  return true;
+};

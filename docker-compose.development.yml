@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+  api:
+    image: node:12
+    working_dir: /usr/src/app
+    restart: always
+    container_name: crud-api
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - 9229:9229
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      - DB_COMPOSE_HOST=postgres
+    command: bash -c "yarn && yarn dev"
+
+  postgres:
+    image: postgres:13
+    restart: always
+    container_name: crud-database
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./.volumes/database:/var/lib/postgresql/data

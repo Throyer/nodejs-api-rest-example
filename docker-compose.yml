@@ -1,9 +1,10 @@
 version: '3.3'
 
 services:
-  node-crud:
+  api:
     build: ./
     restart: always
-    container_name: node-crud-api
+    container_name: production-api-crud-container
+    network_mode: host
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}

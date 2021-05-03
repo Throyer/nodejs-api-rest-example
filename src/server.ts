@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 
-import { SERVER_PORT } from './config';
+import { SERVER_PORT } from './config/env';
 
 import { routes } from './routes';
 import { started } from './utils/started';
