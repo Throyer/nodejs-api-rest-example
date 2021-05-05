@@ -1,3 +1,3 @@
-export { Page, PageableParams } from './Page';
+export { Page } from './Page';
 export { Paginator } from './Paginator';
 export { Specification } from './Specification';

@@ -8,3 +8,6 @@ services:
     network_mode: host
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - ./dist:/usr/src/app/dist
+      - ./.volumes/logs:/root/.npm/_logs

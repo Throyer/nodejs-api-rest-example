@@ -1,13 +1,13 @@
 <br />
 <p align="center">
   <a href="https://github.com/Throyer/nodejs-api-crud">
-    <!-- <img src="./assets/node.png" alt="Logo" height="300"> -->
+    <img src="./assets/node.png" alt="Logo" height="300">
   </a>
 
   <h3 align="center">CRUD API - Node Js</h3>
 
   <p align="center">
-    Docker, Typescript, Typeorm, JWT, swagger, Routing Controllers e MariaDB
+    Docker, Typescript, Typeorm, JWT, swagger, Routing Controllers e PostgreSQL
     <br />
   </p>
 </p>
@@ -62,19 +62,13 @@ Você pode encontrar a coleção `json` no **postman**/**insomnia** com algumas 
 
 ```sh
 # subir container
-yarn docker:up
+yarn up
 
 # derrubar container
-yarn docker:stop
+yarn stop
 
 # remover container
-yarn docker:down
-
-# rodar os seeds
-yarn seed:run
-
-# criar novo arquivo de seeds
-yarn seed:create
+yarn down
 ```
 
 ## Migrações
@@ -97,8 +91,14 @@ yarn migration:run
 yarn migration:show
 
 # voltar para a migração anterior
-yarn migration:revert
+yarn migration:rollback
 
 # resetar o schema (cuidado este comando limpa a base e cria novamente)
-yarn migration:create-drop
+yarn migration:drop-create
+
+# rodar os seeds
+yarn seed:run
+
+# criar novo arquivo de seeds
+yarn seed:create
 ```
