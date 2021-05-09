@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 
-import { SERVER_PORT, PORT } from './config/env';
+import { SERVER_PORT } from './config/env';
 
 import { routes } from './routes';
 import { started } from './utils/started';
@@ -20,4 +20,4 @@ routes(app);
 
 app.get('/', home);
 
-app.listen(SERVER_PORT || PORT, () => started(SERVER_PORT || PORT));
+app.listen(SERVER_PORT, () => started(SERVER_PORT));
