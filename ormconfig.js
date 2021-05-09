@@ -16,7 +16,7 @@ module.exports = [
       migrationsDir: `./${isDevelopment ? 'src' : 'dist'}/database/migrations`,
     },
     entities: [`./${isDevelopment ? 'src' : 'dist'}/models/**/*{.ts,.js}`],
-    logging: process.env.DB_LOGGING_LEVEL.split(','),
+    logging: process.env?.DB_LOGGING_LEVEL?.split(','),
     ssl: { rejectUnauthorized: false }
   },
   {
