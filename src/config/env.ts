@@ -15,10 +15,12 @@ const {
   TOKEN_EXPIRATION,
 } = process.env;
 
+const PORT = Number(process.env.PORT);
 const SERVER_PORT = Number(process.env.SERVER_PORT);
 const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL.split(',');
 
 export {
+  PORT,
   SERVER_PORT,
   DB_URL,
   DB_HOST,
