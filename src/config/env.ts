@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 dotenv.config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const {
-  DB_URL,
   DB_HOST,
   DB_COMPOSE_HOST,
   DB_PORT,
@@ -16,6 +15,7 @@ const {
 } = process.env;
 
 const PORT = Number(process.env.PORT);
+const DB_URL = process.env.DATABASE_URL || process.env.DB_URL;
 const SERVER_PORT = Number(process.env.SERVER_PORT);
 const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL?.split(',');
 
