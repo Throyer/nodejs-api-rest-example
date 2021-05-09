@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf ./dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
-    "prestart": "npm run build",
     "start": "NODE_ENV=production node dist/server.js",
     "dev": "ts-node-dev --inspect=0.0.0.0:9229 --transpile-only --ignore node_modules -r tsconfig-paths/register src/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
