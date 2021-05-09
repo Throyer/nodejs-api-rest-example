@@ -1,5 +1,7 @@
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+console.log({ isDevelopment });
+
 module.exports = [
   {
     type: 'postgres',
