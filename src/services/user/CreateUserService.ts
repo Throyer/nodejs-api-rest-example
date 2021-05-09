@@ -1,22 +1,18 @@
-import { getRepository, Repository } from 'typeorm';
+import { Equal, getRepository, Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-import { User } from '@models/user';
+import { Role, User } from '@models/user';
 import { HttpStatusError } from '@errors/HttpStatusError';
 import { HttpStatus } from '@shared/web/HttpStatus';
 
 import { CreateUserProps } from './types';
 
 export class CreateUserService {
-  repository: Repository<User> = getRepository(User);
+  userRepository: Repository<User> = getRepository(User);
+  roleRepository: Repository<Role> = getRepository(Role);
 
-  async create({
-    name,
-    email,
-    password,
-    roles,
-  }: CreateUserProps): Promise<User> {
-    const exists = await this.repository.findOne({
+  async create({ name, email, password }: CreateUserProps): Promise<User> {
+    const exists = await this.userRepository.findOne({
       where: { email },
     });
 
@@ -24,11 +20,16 @@ export class CreateUserService {
       throw new HttpStatusError(HttpStatus.BAD_REQUEST, 'Email já utilizado.');
     }
 
-    const user = await this.repository.save({
+    const role = await this.roleRepository.findOne({
+      where: { initials: Equal('USER') },
+      select: ['id'],
+    });
+
+    const user = await this.userRepository.save({
       name,
       email,
       password: await hash(password, 8),
-      roles,
+      roles: [role],
     });
 
     delete user.password;
