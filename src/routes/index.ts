@@ -1,17 +1,18 @@
-import path from "path";
+import path from 'path';
 
-import { Express } from "express";
+import { Express } from 'express';
 import {
   RoutingControllersOptions,
   useExpressServer,
   getMetadataArgsStorage,
-} from "routing-controllers";
-import { AuthorizationChecker } from "../utils/authorization-checker";
-import { CurrentUserChecker } from "../utils/current-user-checker";
+} from 'routing-controllers';
 
-import { validationMetadatasToSchemas } from "class-validator-jsonschema";
-import { routingControllersToSpec } from "routing-controllers-openapi";
-import * as swaggerUiExpress from "swagger-ui-express";
+import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+import { routingControllersToSpec } from 'routing-controllers-openapi';
+import * as swaggerUiExpress from 'swagger-ui-express';
+
+import { CurrentUserChecker } from '@middlewares/CurrentUserChecker';
+import { AuthorizationChecker } from '@middlewares/AuthorizationChecker';
 
 export const routes = (app: Express): void => {
   const options: RoutingControllersOptions = {
@@ -19,14 +20,14 @@ export const routes = (app: Express): void => {
     validation: true,
     authorizationChecker: AuthorizationChecker,
     currentUserChecker: CurrentUserChecker,
-    controllers: [path.join(__dirname, "..", "/controllers/**/*{.ts,.js}")],
-    middlewares: [path.join(__dirname, "..", "/middlewares/**/*{.ts,.js}")],
+    controllers: [path.join(__dirname, '..', '/controllers/**/*{.ts,.js}')],
+    middlewares: [path.join(__dirname, '..', '/middlewares/**/*{.ts,.js}')],
   };
 
   useExpressServer(app, options);
 
   const schemas = validationMetadatasToSchemas({
-    refPointerPrefix: "#/components/schemas/",
+    refPointerPrefix: '#/components/schemas/',
   });
 
   const storage = getMetadataArgsStorage();
@@ -35,22 +36,22 @@ export const routes = (app: Express): void => {
       schemas,
       securitySchemes: {
         jwt: {
-          scheme: "bearer",
-          type: "http",
-          bearerFormat: "JWT",
+          scheme: 'bearer',
+          type: 'http',
+          bearerFormat: 'JWT',
         },
       },
     },
     security: [{ jwt: [] }],
     info: {
-      title: "Node Crud API docs",
-      version: "1.0.0",
+      title: 'Node Crud API docs',
+      version: '1.0.0',
     },
   });
 
   app.use(
-    "/docs",
+    '/docs',
     swaggerUiExpress.serve,
-    swaggerUiExpress.setup(specifications)
+    swaggerUiExpress.setup(specifications),
   );
 };
