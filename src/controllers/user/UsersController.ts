@@ -11,6 +11,7 @@ import {
   QueryParams,
   OnNull,
   Authorized,
+  CurrentUser,
 } from 'routing-controllers';
 
 import {
@@ -26,6 +27,9 @@ import {
 import { User } from '@models/user';
 
 import { Page } from '@shared/pagination';
+import { Session } from '@shared/auth';
+import { HttpStatusError } from '@errors/HttpStatusError';
+import { HttpStatus } from '@shared/web/HttpStatus';
 
 @JsonController('/users')
 export class UsersController {
@@ -45,21 +49,41 @@ export class UsersController {
   @Authorized(['USER'])
   @Get('/:id')
   @OnUndefined(404)
-  async show(@Param('id') id: number): Promise<UserDTO> {
+  async show(
+    @Param('id') id: number,
+    @CurrentUser() session: Session,
+  ): Promise<UserDTO> {
+    if (session.roles.every(role => role !== 'ADM') && session.id !== id) {
+      throw new HttpStatusError(
+        HttpStatus.FORBIDDEN,
+        'Permissão invalida para este recurso.',
+      );
+    }
     return this.findUserService.findOne(id);
   }
 
   @Authorized(['USER'])
   @Post()
-  async store(@Body() user: CreateUserProps): Promise<User> {
-    return this.createUserService.create(user);
+  async store(
+    @Body() user: CreateUserProps,
+    @CurrentUser() session: Session,
+  ): Promise<User> {
+    return this.createUserService.create(user, session);
   }
+
   @Authorized(['USER'])
   @Put('/:id')
   async update(
     @Param('id') id: number,
     @Body() user: UpdateUserProps,
+    @CurrentUser() session: Session,
   ): Promise<User> {
+    if (session.roles.every(role => role !== 'ADM') && session.id !== id) {
+      throw new HttpStatusError(
+        HttpStatus.FORBIDDEN,
+        'Permissão invalida para este recurso.',
+      );
+    }
     return this.updateUserService.update(id, user);
   }
 

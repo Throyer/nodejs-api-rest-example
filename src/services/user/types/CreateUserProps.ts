@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsArray, IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreateUserProps {
   @IsNotEmpty({ message: 'Informe um nome.' })
@@ -9,4 +9,7 @@ export class CreateUserProps {
 
   @IsNotEmpty({ message: 'Informe uma senha.' })
   password: string;
+
+  @IsArray()
+  roles: { id: number }[];
 }
