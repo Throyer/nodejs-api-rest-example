@@ -22,7 +22,7 @@ module.exports = [
   {
     name: 'seed',
     type: 'postgres',
-    url: process.env.DB_URL,
+    url: process.env.DB_URL || process.env.DATABASE_URL,
     host: process.env.DB_COMPOSE_HOST || process.env.DB_HOST,
     port: process.env.DB_PORT,
     username: process.env.DB_USERNAME,
