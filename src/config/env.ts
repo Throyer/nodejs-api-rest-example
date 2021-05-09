@@ -17,7 +17,7 @@ const {
 
 const PORT = Number(process.env.PORT);
 const SERVER_PORT = Number(process.env.SERVER_PORT);
-const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL.split(',');
+const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL?.split(',');
 
 export {
   PORT,
