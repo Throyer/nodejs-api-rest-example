@@ -1,5 +1,6 @@
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
+import { Service } from 'typedi';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
@@ -8,10 +9,13 @@ import { HttpStatusError } from '@errors/HttpStatusError';
 import { HttpStatus } from '@shared/web/HttpStatus';
 import { User } from '@models/user';
 
+import { InjectRepository } from 'typeorm-typedi-extensions';
 import { AuthRequest, AuthResponse } from './types';
 
+@Service()
 export class AuthenticateUserService {
-  repository: Repository<User> = getRepository(User);
+  @InjectRepository(User)
+  repository: Repository<User>;
 
   async authenticate({ email, password }: AuthRequest): Promise<AuthResponse> {
     const user = await this.repository.findOne({

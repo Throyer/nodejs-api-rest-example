@@ -5,6 +5,7 @@ import {
   RoutingControllersOptions,
   useExpressServer,
   getMetadataArgsStorage,
+  useContainer,
 } from 'routing-controllers';
 
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
@@ -13,8 +14,11 @@ import * as swaggerUiExpress from 'swagger-ui-express';
 
 import { CurrentUserChecker } from '@middlewares/CurrentUserChecker';
 import { AuthorizationChecker } from '@middlewares/AuthorizationChecker';
+import Container from 'typedi';
 
 export const routes = (app: Express): void => {
+  useContainer(Container);
+
   const options: RoutingControllersOptions = {
     defaultErrorHandler: false,
     validation: true,

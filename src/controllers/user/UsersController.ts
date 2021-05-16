@@ -1,4 +1,6 @@
-import { getRepository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+import { Repository } from 'typeorm';
+import { Inject, Service } from 'typedi';
 import {
   Get,
   JsonController,
@@ -31,14 +33,20 @@ import { Session } from '@shared/auth';
 import { HttpStatusError } from '@errors/HttpStatusError';
 import { HttpStatus } from '@shared/web/HttpStatus';
 
+@Service()
 @JsonController('/users')
 export class UsersController {
-  constructor(
-    private findUserService = new FindUserService(),
-    private createUserService = new CreateUserService(),
-    private updateUserService = new UpdateUserService(),
-    private repository = getRepository(User),
-  ) {}
+  @Inject()
+  private createUserService: CreateUserService;
+
+  @Inject()
+  private readonly findUserService: FindUserService;
+
+  @Inject()
+  private updateUserService: UpdateUserService;
+
+  @InjectRepository(User)
+  private repository: Repository<User>;
 
   @Authorized(['ADM'])
   @Get()

@@ -12,8 +12,12 @@ export const started = (port: number): void =>
         : ''
     }
     🚨️  environment: ${process.env.NODE_ENV}
-    🎲️  database:
-          ╠═ host: ${process.env.DB_COMPOSE_HOST || process.env.DB_HOST}
-          ╠═ port: ${process.env.DB_PORT}
-          ╚═ db name: ${process.env.DB_NAME}
+    ${
+      process.env.NODE_ENV === 'development'
+        ? `🎲️  database:
+         ╠═ host: ${process.env.DB_COMPOSE_HOST || process.env.DB_HOST}
+         ╠═ port: ${process.env.DB_PORT}
+         ╚═ db name: ${process.env.DB_NAME}`
+        : ''
+    }
     `);

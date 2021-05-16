@@ -1,4 +1,6 @@
-import { FindConditions, getRepository, Repository } from 'typeorm';
+import { FindConditions, Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+import { Service } from 'typedi';
 
 import { Page } from '@shared/pagination';
 import { User } from '@models/user';
@@ -6,8 +8,10 @@ import { User } from '@models/user';
 import { UserQueryParams, UserDTO } from './types';
 import { createUserDTO } from './utils/create-user-dto';
 
+@Service()
 export class FindUserService {
-  constructor(private repository: Repository<User> = getRepository(User)) {}
+  @InjectRepository(User)
+  private repository: Repository<User>;
 
   public async findPage(query: UserQueryParams): Promise<Page<UserDTO>> {
     const where: FindConditions<User> = {};

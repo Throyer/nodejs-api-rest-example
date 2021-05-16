@@ -1,19 +1,27 @@
-import { DeepPartial, Equal, getRepository, Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+import { DeepPartial, Equal, Repository } from 'typeorm';
 import { hash } from 'bcryptjs';
+import { Service } from 'typedi';
+
+import { HttpStatusError } from '@errors/HttpStatusError';
 
 import { Role, User } from '@models/user';
-import { HttpStatusError } from '@errors/HttpStatusError';
-import { HttpStatus } from '@shared/web/HttpStatus';
 
 import { Session } from '@shared/auth';
+import { HttpStatus } from '@shared/web/HttpStatus';
+
 import { CreateUserProps } from './types';
 
+@Service()
 export class CreateUserService {
-  userRepository: Repository<User> = getRepository(User);
-  roleRepository: Repository<Role> = getRepository(Role);
+  @InjectRepository(User)
+  userRepository: Repository<User>;
+
+  @InjectRepository(Role)
+  roleRepository: Repository<Role>;
 
   async create(
-    { name, email, password, roles }: CreateUserProps,
+    { name, email, password, nickname, phone, roles }: CreateUserProps,
     session: Session,
   ): Promise<User> {
     const exists = await this.userRepository.findOne({
@@ -27,6 +35,8 @@ export class CreateUserService {
     const user: DeepPartial<User> = {
       name,
       email,
+      nickname,
+      phone,
       password: await hash(password, 8),
       roles,
     };

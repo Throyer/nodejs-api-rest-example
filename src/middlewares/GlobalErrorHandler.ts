@@ -9,6 +9,7 @@ import {
 import { HttpStatusError } from '@errors/HttpStatusError';
 import { HttpStatus } from '@shared/web/HttpStatus';
 import { formatErrors } from '@utils/format-errors';
+import { Service } from 'typedi';
 
 type Errors = {
   errors?: ValidationError[];
@@ -17,6 +18,7 @@ type Errors = {
   message?: string;
 } & HttpStatusError;
 
+@Service()
 @Middleware({ type: 'after' })
 export class GlobalErrorHandler implements ExpressErrorMiddlewareInterface {
   error(error: Errors, _request: Request, respose: Response): Response {
