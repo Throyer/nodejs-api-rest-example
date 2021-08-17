@@ -22,11 +22,11 @@ export class insertRoleAndAdmin1603672322269 implements MigrationInterface {
         ("user_id", "role_id")
       VALUES
         (
-            (SELECT "id" FROM "user" WHERE "email" = '${DEFAULT_ADM_EMAIL}'),
-            (SELECT "id" FROM "role" WHERE "initials" = 'ADM')
+          (SELECT "id" FROM "user" WHERE "email" = '${DEFAULT_ADM_EMAIL}'),
+          (SELECT "id" FROM "role" WHERE "initials" = 'ADM')
         ),(
-            (SELECT "id" FROM "user" WHERE "email" = '${DEFAULT_ADM_EMAIL}'),
-            (SELECT "id" FROM "role" WHERE "initials" = 'USER')
+          (SELECT "id" FROM "user" WHERE "email" = '${DEFAULT_ADM_EMAIL}'),
+          (SELECT "id" FROM "role" WHERE "initials" = 'USER')
         );
     `);
   }
