@@ -1,19 +1,23 @@
 import {
-  REFRESH_TOKEN_EXPIRATION,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRATION_IN_DAYS,
   TOKEN_EXPIRATION,
   TOKEN_SECRET,
 } from '@config/env';
 import { HttpStatusError } from '@errors/HttpStatusError';
+import { RefreshToken } from '@models/user/RefreshToken';
 import { User } from '@models/user/User';
 import { HttpStatus } from '@shared/web/HttpStatus';
 import { compare } from 'bcryptjs';
+import { addDays } from 'date-fns';
 import { sign } from 'jsonwebtoken';
-import { createQueryBuilder } from 'typeorm';
+import { createQueryBuilder, getRepository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 import { AuthRequest } from './types/AuthRequest';
 import { AuthResponse } from './types/AuthResponse';
 
 export class AuthenticateUserService {
+  private refreshTokenRepository = getRepository(RefreshToken);
+
   async authenticate({ email, password }: AuthRequest): Promise<AuthResponse> {
     const user = await createQueryBuilder(User, 'user')
       .innerJoin('user.roles', 'role')
@@ -55,13 +59,24 @@ export class AuthenticateUserService {
       expiresIn: TOKEN_EXPIRATION,
     });
 
-    const refresh_token = sign({}, REFRESH_TOKEN_SECRET, {
-      subject: user.id.toString(),
-      expiresIn: REFRESH_TOKEN_EXPIRATION,
-    });
+    await this.refreshTokenRepository.update(
+      {
+        userId: user.id,
+        available: true,
+      },
+      {
+        available: false,
+      },
+    );
 
-    delete user.password;
-    delete user.roles;
+    const code = uuid();
+
+    await this.refreshTokenRepository.save({
+      code,
+      available: true,
+      expiresIn: addDays(new Date(), REFRESH_TOKEN_EXPIRATION_IN_DAYS),
+      userId: user.id,
+    });
 
     return {
       user: {
@@ -74,7 +89,7 @@ export class AuthenticateUserService {
         roles,
       },
       token,
-      refresh_token,
+      refresh_token: code,
     };
   }
 }

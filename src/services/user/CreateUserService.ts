@@ -1,24 +1,27 @@
 import {
-  REFRESH_TOKEN_EXPIRATION,
-  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRATION_IN_DAYS,
   TOKEN_EXPIRATION,
   TOKEN_SECRET,
 } from '@config/env';
 import { HttpStatusError } from '@errors/HttpStatusError';
+import { RefreshToken } from '@models/user/RefreshToken';
 import { Role } from '@models/user/Role';
 import { User } from '@models/user/User';
 import { HttpStatus } from '@shared/web/HttpStatus';
 import { gravatar } from '@utils/avatar';
 import { hash } from 'bcryptjs';
+import { addDays } from 'date-fns';
 import { sign } from 'jsonwebtoken';
-import { Equal, getRepository, Repository } from 'typeorm';
+import { Equal, getRepository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 import { CreateUserProps } from './types/CreateUserProps';
 import { CreateUserWithSession } from './types/CreateUserWithSession';
 import { UserDetails } from './types/UserDetails';
 
 export class CreateUserService {
-  userRepository: Repository<User> = getRepository(User);
-  roleRepository: Repository<Role> = getRepository(Role);
+  private userRepository = getRepository(User);
+  private roleRepository = getRepository(Role);
+  private refreshTokenRepository = getRepository(RefreshToken);
 
   async create({
     name,
@@ -64,9 +67,13 @@ export class CreateUserService {
       expiresIn: TOKEN_EXPIRATION,
     });
 
-    const refresh_token = sign({}, REFRESH_TOKEN_SECRET, {
-      subject: user.id.toString(),
-      expiresIn: REFRESH_TOKEN_EXPIRATION,
+    const code = uuid();
+
+    await this.refreshTokenRepository.save({
+      code,
+      available: true,
+      expiresIn: addDays(new Date(), REFRESH_TOKEN_EXPIRATION_IN_DAYS),
+      userId: user.id,
     });
 
     delete user.password;
@@ -76,7 +83,7 @@ export class CreateUserService {
     return {
       ...new UserDetails(user),
       token,
-      refresh_token,
+      refresh_token: code,
     };
   }
 

@@ -27,6 +27,12 @@ export class createTableUsers1603637859526 implements MigrationInterface {
             name: 'email',
             type: 'varchar',
             isUnique: true,
+            isNullable: true,
+          },
+          {
+            name: 'deleted_email',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'password',
@@ -36,6 +42,16 @@ export class createTableUsers1603637859526 implements MigrationInterface {
             name: 'access_token',
             type: 'varchar',
             isNullable: true,
+          },
+          {
+            name: 'avatar_url',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'active',
+            type: 'boolean',
+            default: 'true',
           },
           ...timestamps(),
         ],

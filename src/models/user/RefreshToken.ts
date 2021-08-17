@@ -10,8 +10,8 @@ import {
 } from 'typeorm';
 import { User } from './User';
 
-@Entity('password_recovery')
-export class PasswordRecovery {
+@Entity('refresh_token')
+export class RefreshToken {
   @Generated('increment')
   @PrimaryColumn('bigint', {
     name: 'id',
@@ -24,20 +24,15 @@ export class PasswordRecovery {
   })
   code?: string;
 
-  @Column('boolean', {
-    name: 'confirmed',
-  })
-  confirmed = false;
-
-  @Column('boolean', {
-    name: 'used',
-  })
-  used = false;
-
   @Column('timestamp with time zone', {
     name: 'expires_in',
   })
   expiresIn: Date;
+
+  @Column('boolean', {
+    name: 'available',
+  })
+  available = false;
 
   @JoinColumn({
     name: 'user_id',
