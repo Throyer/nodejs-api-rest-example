@@ -7,12 +7,6 @@ const connection = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  migrations: [
-    `./${isDevelopment ? 'src' : 'dist'}/database/migrations/*{.ts,.js}`,
-  ],
-  cli: {
-    migrationsDir: `./${isDevelopment ? 'src' : 'dist'}/database/migrations`,
-  },
   entities: [`./${isDevelopment ? 'src' : 'dist'}/models/**/*{.ts,.js}`],
   logging: process.env.DB_LOGGING_LEVEL ? process.env.DB_LOGGING_LEVEL.split(',') : undefined,
 }
@@ -25,10 +19,23 @@ if (process.env.DB_SSL === 'true') {
 module.exports = [
   {
     type: 'postgres',
+    migrations: [
+      `./${isDevelopment ? 'src' : 'dist'}/database/migrations/*{.ts,.js}`,
+    ],
+    cli: {
+      migrationsDir: `./${isDevelopment ? 'src' : 'dist'}/database/migrations`,
+    },
     ...connection
   },
   {
     name: 'seed',
+    type: 'postgres',
+    migrations: [
+      `./${isDevelopment ? 'src' : 'dist'}/database/seeds/*{.ts,.js}`,
+    ],
+    cli: {
+      migrationsDir: `./${isDevelopment ? 'src' : 'dist'}/database/seeds`,
+    },
     ...connection
   }
 ];

@@ -6,7 +6,7 @@ import { HttpStatus } from '@shared/web/HttpStatus';
 import { Token } from '@shared/auth/Token';
 import { HttpStatusError } from '@errors/HttpStatusError';
 
-export const AuthorizationChecker = async (
+export const AuthorizationProvider = async (
   action: Action,
   requirements: string[],
 ): Promise<boolean> => {
@@ -14,7 +14,7 @@ export const AuthorizationChecker = async (
 
   if (!header) {
     throw new HttpStatusError(
-      HttpStatus.UNAUTHORIZED,
+      HttpStatus.FORBIDDEN,
       'JWT não esta presente no header.',
     );
   }
@@ -39,7 +39,7 @@ export const AuthorizationChecker = async (
     roles.every(role => requirements.every(required => required !== role))
   ) {
     throw new HttpStatusError(
-      HttpStatus.FORBIDDEN,
+      HttpStatus.UNAUTHORIZED,
       'Permissão invalida para este recurso.',
     );
   }

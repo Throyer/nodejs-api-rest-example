@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES5",
+    "lib": ["ES2015", "DOM"],
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
@@ -15,9 +16,11 @@
       "@config/*": ["config/*"],
       "@models/*": ["models/*"],
       "@middlewares/*": ["middlewares/*"],
+      "@transformers/*": ["transformers/*"],
       "@services/*": ["services/*"],
       "@shared/*": ["shared/*"],
       "@utils/*": ["utils/*"],
+      "@validators/*": ["validators/*"],
       "@errors/*": ["errors/*"],
     },
   },

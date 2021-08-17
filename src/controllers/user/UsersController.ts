@@ -1,57 +1,47 @@
-import { InjectRepository } from 'typeorm-typedi-extensions';
-import { Repository } from 'typeorm';
-import { Inject, Service } from 'typedi';
+import { HttpStatusError } from '@errors/HttpStatusError';
+import { User } from '@models/user/User';
+import { CreateUserService } from '@services/user/CreateUserService';
+import { FindUserService } from '@services/user/FindUserService';
+import { CreateUserProps } from '@services/user/types/CreateUserProps';
+import { CreateUserWithSession } from '@services/user/types/CreateUserWithSession';
+import { UpdateUserProps } from '@services/user/types/UpdateUserProps';
+import { UserDetails } from '@services/user/types/UserDetails';
+import { UserQueryParams } from '@services/user/types/UserQueryParams';
+import { UpdateUserService } from '@services/user/UpdateUserService';
+import { Session } from '@shared/auth';
+import { Page } from '@shared/pagination';
+import { HttpStatus } from '@shared/web/HttpStatus';
+import { Response } from 'express';
 import {
+  Authorized,
+  Body,
+  CurrentUser,
+  Delete,
   Get,
   JsonController,
+  OnUndefined,
   Param,
   Post,
-  Body,
   Put,
-  OnUndefined,
-  Delete,
   QueryParams,
-  OnNull,
-  Authorized,
-  CurrentUser,
+  Res,
 } from 'routing-controllers';
+import { getRepository } from 'typeorm';
 
-import {
-  CreateUserProps,
-  CreateUserService,
-  UpdateUserProps,
-  UpdateUserService,
-  FindUserService,
-  UserQueryParams,
-  UserDTO,
-} from '@services/user';
-
-import { User } from '@models/user';
-
-import { Page } from '@shared/pagination';
-import { Session } from '@shared/auth';
-import { HttpStatusError } from '@errors/HttpStatusError';
-import { HttpStatus } from '@shared/web/HttpStatus';
-
-@Service()
 @JsonController('/users')
 export class UsersController {
-  @Inject()
-  private createUserService: CreateUserService;
+  private findService = new FindUserService();
+  private createService = new CreateUserService();
+  private updateService = new UpdateUserService();
 
-  @Inject()
-  private readonly findUserService: FindUserService;
-
-  @Inject()
-  private updateUserService: UpdateUserService;
-
-  @InjectRepository(User)
-  private repository: Repository<User>;
+  private repository = getRepository(User);
 
   @Authorized(['ADM'])
   @Get()
-  async index(@QueryParams() query: UserQueryParams): Promise<Page<UserDTO>> {
-    return this.findUserService.findPage(query);
+  async index(
+    @QueryParams() query: UserQueryParams,
+  ): Promise<Page<UserDetails>> {
+    return this.findService.findPage(query);
   }
 
   @Authorized(['USER'])
@@ -60,23 +50,19 @@ export class UsersController {
   async show(
     @Param('id') id: number,
     @CurrentUser() session: Session,
-  ): Promise<UserDTO> {
+  ): Promise<UserDetails> {
     if (session.roles.every(role => role !== 'ADM') && session.id !== id) {
       throw new HttpStatusError(
         HttpStatus.FORBIDDEN,
         'Permissão invalida para este recurso.',
       );
     }
-    return this.findUserService.findOne(id);
+    return this.findService.findOne(id);
   }
 
-  @Authorized(['USER'])
   @Post()
-  async store(
-    @Body() user: CreateUserProps,
-    @CurrentUser() session: Session,
-  ): Promise<User> {
-    return this.createUserService.create(user, session);
+  async store(@Body() body: CreateUserProps): Promise<CreateUserWithSession> {
+    return this.createService.create(body);
   }
 
   @Authorized(['USER'])
@@ -85,28 +71,36 @@ export class UsersController {
     @Param('id') id: number,
     @Body() user: UpdateUserProps,
     @CurrentUser() session: Session,
-  ): Promise<User> {
+  ): Promise<UpdateUserProps> {
     if (session.roles.every(role => role !== 'ADM') && session.id !== id) {
       throw new HttpStatusError(
         HttpStatus.FORBIDDEN,
         'Permissão invalida para este recurso.',
       );
     }
-    return this.updateUserService.update(id, user);
+    return this.updateService.update(id, user);
   }
 
   @Authorized(['ADM'])
   @Delete('/:id')
-  @OnUndefined(200)
-  @OnNull(404)
-  async destroy(@Param('id') id: number): Promise<null | undefined> {
+  async destroy(
+    @Param('id') id: number,
+    @Res() response: Response,
+  ): Promise<Response> {
     const user = await this.repository.findOne({ where: { id } });
 
     if (!user) {
-      return null;
+      return response.status(404).send();
     }
 
-    await this.repository.delete(user.id);
-    return undefined;
+    await this.repository.update(user.id, {
+      active: false,
+      email: null,
+      deletedEmail: user.email,
+    });
+
+    await this.repository.softDelete(user.id);
+
+    return response.send();
   }
 }

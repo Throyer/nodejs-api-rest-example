@@ -1,46 +1,63 @@
-import { FindConditions, Repository } from 'typeorm';
-import { InjectRepository } from 'typeorm-typedi-extensions';
-import { Service } from 'typedi';
-
+import { User } from '@models/user/User';
 import { Page } from '@shared/pagination';
-import { User } from '@models/user';
+import { NotFoundError } from 'routing-controllers';
+import { FindConditions, getRepository, Repository } from 'typeorm';
+import { UserDetails } from './types/UserDetails';
+import { UserQueryParams } from './types/UserQueryParams';
 
-import { UserQueryParams, UserDTO } from './types';
-import { createUserDTO } from './utils/create-user-dto';
-
-@Service()
 export class FindUserService {
-  @InjectRepository(User)
-  private repository: Repository<User>;
+  private repository: Repository<User> = getRepository(User);
 
-  public async findPage(query: UserQueryParams): Promise<Page<UserDTO>> {
+  public async findPage(params: UserQueryParams): Promise<Page<UserDetails>> {
     const where: FindConditions<User> = {};
 
-    const { page, size } = query;
-    if (query.name) {
-      where.name = query.name;
+    const { page, size } = params;
+    if (params.name) {
+      where.name = params.name;
     }
 
-    const options = query.paginate<User>({
-      select: ['id', 'name', 'email'],
+    const options = params.paginate<User>({
+      select: [
+        'id',
+        'name',
+        'email',
+        'nickname',
+        'phone',
+        'avatarUrl',
+        'active',
+      ],
       relations: ['roles'],
       where,
     });
 
     const [select, count] = await this.repository.findAndCount(options);
 
-    const users = select.map(createUserDTO);
+    const users = select.map(user => new UserDetails(user));
 
-    return new Page(await Promise.all(users), count, page, size);
+    return new Page(users, count, page, size);
   }
 
-  public async findOne(id: number): Promise<UserDTO> {
-    return createUserDTO(
-      await this.repository.findOne({
-        where: { id },
-        select: ['id', 'name', 'email'],
-        relations: ['roles'],
-      }),
-    );
+  public async findOne(id: number): Promise<UserDetails> {
+    const user = await this.repository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'email',
+        'nickname',
+        'phone',
+        'avatarUrl',
+        'active',
+      ],
+      relations: ['roles'],
+    });
+
+    if (!user) {
+      throw new NotFoundError('Não foi possível localizar usuário.');
+    }
+
+    const details = new UserDetails(user);
+
+    return details;
   }
 }

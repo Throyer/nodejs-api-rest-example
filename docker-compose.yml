@@ -4,8 +4,10 @@ services:
   api:
     build: ./
     restart: always
-    container_name: production-api-crud-container
     network_mode: host
+    container_name: production-api-container
+    environment:
+      TZ: "America/Sao_Paulo"
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:

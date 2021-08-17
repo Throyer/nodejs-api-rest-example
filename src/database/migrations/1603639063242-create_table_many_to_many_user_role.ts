@@ -6,7 +6,8 @@ import {
 } from 'typeorm';
 
 export class createTableManyToManyUserRole1603639063242
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

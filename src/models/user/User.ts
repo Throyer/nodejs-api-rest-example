@@ -1,19 +1,25 @@
+import { IntegerTransformer } from '@transformers/IntegerTransformer';
 import { Exclude } from 'class-transformer';
 import {
-  Entity,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Generated,
   JoinTable,
   ManyToMany,
-  CreateDateColumn,
+  PrimaryColumn,
   UpdateDateColumn,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
-
 import { Role } from './Role';
 
 @Entity('user')
 export class User {
-  @PrimaryGeneratedColumn()
+  @Generated('increment')
+  @PrimaryColumn('bigint', {
+    name: 'id',
+    transformer: IntegerTransformer.getInstance(),
+  })
   id: number;
 
   @Column('varchar', {
@@ -25,6 +31,12 @@ export class User {
     name: 'email',
   })
   email: string;
+
+  @Exclude()
+  @Column('varchar', {
+    name: 'deleted_email',
+  })
+  deletedEmail: string;
 
   @Exclude()
   @Column('varchar', {
@@ -41,6 +53,16 @@ export class User {
     name: 'phone',
   })
   phone?: string;
+
+  @Column('varchar', {
+    name: 'avatar_url',
+  })
+  avatarUrl?: string;
+
+  @Column('boolean', {
+    name: 'active',
+  })
+  active = true;
 
   @ManyToMany(() => Role)
   @JoinTable({
@@ -65,4 +87,10 @@ export class User {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @Exclude()
+  @DeleteDateColumn({
+    name: 'deleted_at',
+  })
+  deletedAt: Date;
 }

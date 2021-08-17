@@ -1,20 +1,30 @@
+import { IntegerTransformer } from '@transformers/IntegerTransformer';
 import {
   Entity,
   Column,
   UpdateDateColumn,
   CreateDateColumn,
-  PrimaryGeneratedColumn,
+  Generated,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity('role')
 export class Role {
-  @PrimaryGeneratedColumn()
+  @Generated('increment')
+  @PrimaryColumn('bigint', {
+    name: 'id',
+    transformer: IntegerTransformer.getInstance(),
+  })
   id: number;
 
-  @Column()
+  @Column('varchar', {
+    name: 'name',
+  })
   name: string;
 
-  @Column()
+  @Column('varchar', {
+    name: 'initials',
+  })
   initials: string;
 
   @CreateDateColumn({

@@ -9,9 +9,11 @@ module.exports = {
         '@config': './src/config',
         '@models': './src/models',
         '@middlewares': './src/middlewares',
+        '@transformers': './src/transformers',
         '@services': './src/services',
         '@shared': './src/shared',
         '@utils': './src/utils',
+        '@validators': './src/validators',
         '@errors': './src/errors',
       }
     }],

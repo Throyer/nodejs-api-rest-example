@@ -4,8 +4,7 @@ services:
   api:
     image: node:12
     working_dir: /usr/src/app
-    restart: always
-    container_name: crud-api
+    container_name: api-container
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
       - 9229:9229
@@ -18,17 +17,19 @@ services:
       - ./.volumes/logs:/root/.npm/_logs
     environment:
       - DB_COMPOSE_HOST=postgres
+      - TZ=America/Sao_Paulo
     command: bash -c "yarn && yarn dev"
 
   postgres:
     image: postgres:13
-    restart: always
-    container_name: crud-database
+    container_name: postgres-container
     ports:
       - ${DB_PORT}:5432
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+      - TZ=America/Sao_Paulo
+      - PGTZ=America/Sao_Paulo
     volumes:
       - ./.volumes/database:/var/lib/postgresql/data

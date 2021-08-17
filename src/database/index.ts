@@ -1,5 +1,5 @@
-import { createConnection, useContainer } from 'typeorm';
-import { Container } from 'typeorm-typedi-extensions';
+import { createConnection } from 'typeorm';
 
-useContainer(Container);
-createConnection();
+createConnection()
+  .then(({ name }) => console.log(`Database connected. connection: ${name}`))
+  .catch(error => console.error('Error on database connection', { error }));

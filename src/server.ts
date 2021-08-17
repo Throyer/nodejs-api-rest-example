@@ -3,11 +3,11 @@ import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 
-import { SERVER_PORT } from './config/env';
+import { SERVER_PORT } from '@config/env';
+import { started } from '@utils/started';
+import { home } from '@utils/home';
 
 import { routes } from './routes';
-import { started } from './utils/started';
-import { home } from './utils/home';
 
 import './database';
 

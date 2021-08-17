@@ -9,6 +9,11 @@ export const timestamps = (): TableColumnOptions[] => [
   {
     name: 'updated_at',
     type: 'timestamp',
-    default: 'now()',
+    isNullable: true,
+  },
+  {
+    name: 'deleted_at',
+    type: 'timestamp',
+    isNullable: true,
   },
 ];

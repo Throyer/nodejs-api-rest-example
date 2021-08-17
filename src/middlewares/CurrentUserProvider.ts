@@ -6,7 +6,7 @@ import { Session, Token } from '@shared/auth';
 import { HttpStatusError } from '@errors/HttpStatusError';
 import { HttpStatus } from '@shared/web/HttpStatus';
 
-export const CurrentUserChecker = async (action: Action): Promise<Session> => {
+export const CurrentUserProvider = async (action: Action): Promise<Session> => {
   const header = action.request.headers.authorization;
 
   if (!header) {
@@ -21,10 +21,10 @@ export const CurrentUserChecker = async (action: Action): Promise<Session> => {
   try {
     const { sub: id, roles } = verify(token, TOKEN_SECRET) as Token;
 
-    return {
-      id: Number(id),
+    return new Session({
+      userId: Number(id),
       roles,
-    };
+    });
   } catch {
     throw new HttpStatusError(
       HttpStatus.UNAUTHORIZED,

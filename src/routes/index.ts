@@ -5,25 +5,21 @@ import {
   RoutingControllersOptions,
   useExpressServer,
   getMetadataArgsStorage,
-  useContainer,
 } from 'routing-controllers';
 
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import * as swaggerUiExpress from 'swagger-ui-express';
 
-import { CurrentUserChecker } from '@middlewares/CurrentUserChecker';
-import { AuthorizationChecker } from '@middlewares/AuthorizationChecker';
-import Container from 'typedi';
+import { AuthorizationProvider } from '@middlewares/AuthorizationProvider';
+import { CurrentUserProvider } from '@middlewares/CurrentUserProvider';
 
 export const routes = (app: Express): void => {
-  useContainer(Container);
-
   const options: RoutingControllersOptions = {
     defaultErrorHandler: false,
     validation: true,
-    authorizationChecker: AuthorizationChecker,
-    currentUserChecker: CurrentUserChecker,
+    authorizationChecker: AuthorizationProvider,
+    currentUserChecker: CurrentUserProvider,
     controllers: [path.join(__dirname, '..', '/controllers/**/*{.ts,.js}')],
     middlewares: [path.join(__dirname, '..', '/middlewares/**/*{.ts,.js}')],
   };
@@ -48,7 +44,7 @@ export const routes = (app: Express): void => {
     },
     security: [{ jwt: [] }],
     info: {
-      title: 'Node Crud API docs',
+      title: 'poupe.it',
       version: '1.0.0',
     },
   });

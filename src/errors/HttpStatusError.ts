@@ -1,4 +1,4 @@
-import { HttpStatus } from '@shared/web/HttpStatus';
+import { HttpStatus } from '../shared/web/HttpStatus';
 
 export class HttpStatusError extends Error {
   status: HttpStatus;

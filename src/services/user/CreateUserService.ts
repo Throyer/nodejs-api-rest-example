@@ -1,69 +1,86 @@
-import { InjectRepository } from 'typeorm-typedi-extensions';
-import { DeepPartial, Equal, Repository } from 'typeorm';
-import { hash } from 'bcryptjs';
-import { Service } from 'typedi';
-
+import {
+  REFRESH_TOKEN_EXPIRATION,
+  REFRESH_TOKEN_SECRET,
+  TOKEN_EXPIRATION,
+  TOKEN_SECRET,
+} from '@config/env';
 import { HttpStatusError } from '@errors/HttpStatusError';
-
-import { Role, User } from '@models/user';
-
-import { Session } from '@shared/auth';
+import { Role } from '@models/user/Role';
+import { User } from '@models/user/User';
 import { HttpStatus } from '@shared/web/HttpStatus';
+import { gravatar } from '@utils/avatar';
+import { hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import { Equal, getRepository, Repository } from 'typeorm';
+import { CreateUserProps } from './types/CreateUserProps';
+import { CreateUserWithSession } from './types/CreateUserWithSession';
+import { UserDetails } from './types/UserDetails';
 
-import { CreateUserProps } from './types';
-
-@Service()
 export class CreateUserService {
-  @InjectRepository(User)
-  userRepository: Repository<User>;
+  userRepository: Repository<User> = getRepository(User);
+  roleRepository: Repository<Role> = getRepository(Role);
 
-  @InjectRepository(Role)
-  roleRepository: Repository<Role>;
-
-  async create(
-    { name, email, password, nickname, phone, roles }: CreateUserProps,
-    session: Session,
-  ): Promise<User> {
+  async create({
+    name,
+    email,
+    password,
+    nickname,
+    phone,
+  }: CreateUserProps): Promise<CreateUserWithSession> {
     const exists = await this.userRepository.findOne({
       where: { email },
     });
 
     if (exists) {
-      throw new HttpStatusError(HttpStatus.BAD_REQUEST, 'Email já utilizado.');
-    }
-
-    const user: DeepPartial<User> = {
-      name,
-      email,
-      nickname,
-      phone,
-      password: await hash(password, 8),
-      roles,
-    };
-
-    if (
-      roles &&
-      roles.length > 0 &&
-      session.roles.every(role => role !== 'ADM')
-    ) {
       throw new HttpStatusError(
-        HttpStatus.FORBIDDEN,
-        'Permissão invalida para cadastro de super user.',
+        HttpStatus.BAD_REQUEST,
+        'Este email já é utilizado.',
       );
     }
 
-    if (session.roles.every(role => role !== 'ADM')) {
-      const role = await this.roleRepository.findOne({
-        where: { initials: Equal('USER') },
-        select: ['id'],
-      });
-      user.roles = [role];
-    }
+    const role = await this.roleRepository.findOne({
+      where: {
+        initials: Equal('USER'),
+      },
+    });
 
-    const newUser = await this.userRepository.save(user);
+    delete role.createdAt;
+    delete role.updatedAt;
+
+    const user = await this.userRepository.save({
+      name,
+      email,
+      password: await hash(password, 8),
+      nickname,
+      phone,
+      avatarUrl: await this.tryFindAvatarUrl(email),
+      roles: [role],
+    });
+
+    const roles = [role.initials];
+
+    const token = sign({ roles }, TOKEN_SECRET, {
+      subject: user.id.toString(),
+      expiresIn: TOKEN_EXPIRATION,
+    });
+
+    const refresh_token = sign({}, REFRESH_TOKEN_SECRET, {
+      subject: user.id.toString(),
+      expiresIn: REFRESH_TOKEN_EXPIRATION,
+    });
 
     delete user.password;
+    delete user.createdAt;
+    delete user.updatedAt;
 
-    return newUser;
+    return {
+      ...new UserDetails(user),
+      token,
+      refresh_token,
+    };
+  }
+
+  private async tryFindAvatarUrl(email: string): Promise<string | undefined> {
+    return gravatar(email);
   }
 }
