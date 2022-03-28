@@ -10,13 +10,10 @@ import {
 } from 'src/environments/database';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-import * as connection from './connection';
-
 type Connection = Omit<PostgresConnectionOptions, 'ssl'> & { ssl?: any };
 
-const seeds: Connection = {
+const connection: Connection = {
   type: 'postgres',
-  name: 'seed',
   url: DB_URL,
   host: DB_HOST,
   port: DB_PORT,
@@ -24,11 +21,16 @@ const seeds: Connection = {
   password: DB_PASSWORD,
   database: DB_NAME,
   logging: DB_LOGGING_LEVEL,
-  migrations: [path.resolve(__dirname, 'seeds', '*')],
+  logNotifications: true,
   entities: [path.resolve(__dirname, '..', '**', '*.entity{.ts,.js}')],
+  migrations: [path.resolve(__dirname, 'migrations', '*')],
   cli: {
-    migrationsDir: path.resolve(__dirname, 'seeds'),
+    migrationsDir: path.resolve(__dirname, 'migrations'),
   },
 };
 
-module.exports = [connection, seeds];
+if (process.env.NODE_ENV === 'production') {
+  connection.ssl = { rejectUnauthorized: false };
+}
+
+module.exports = connection;

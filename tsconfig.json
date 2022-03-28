@@ -1,27 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES5",
     "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
+    "declaration": true,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@config/*": ["config/*"],
-      "@models/*": ["models/*"],
-      "@middlewares/*": ["middlewares/*"],
-      "@services/*": ["services/*"],
-      "@shared/*": ["shared/*"],
-      "@utils/*": ["utils/*"],
-      "@errors/*": ["errors/*"],
-    },
-  },
-  "include": [
-    "src/**/*"
-  ]
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  }
 }
