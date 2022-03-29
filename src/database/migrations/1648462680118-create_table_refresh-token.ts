@@ -47,7 +47,7 @@ export class createTableRefreshToken1648462680118
           new TableForeignKey({
             name: 'refresh_token_user_fk',
             columnNames: ['user_id'],
-            referencedTableName: 'users',
+            referencedTableName: 'user',
             referencedColumnNames: ['id'],
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',

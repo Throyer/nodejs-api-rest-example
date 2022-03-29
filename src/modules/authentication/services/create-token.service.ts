@@ -61,7 +61,7 @@ export class CreateTokenService {
 
     const accessToken = sign({ roles }, TOKEN_SECRET, {
       subject: user.id.toString(),
-      expiresIn: TOKEN_EXPIRATION_IN_MILLISECONDS,
+      expiresIn: `${TOKEN_EXPIRATION_IN_MILLISECONDS / 1000}s`,
     });
 
     return {

@@ -10,7 +10,7 @@ import {
 } from 'src/environments/database';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-type Connection = Omit<PostgresConnectionOptions, 'ssl'> & { ssl?: any };
+type Connection = Omit<PostgresConnectionOptions, 'ssl'> & { ssl?: any; };
 
 const connection: Connection = {
   type: 'postgres',

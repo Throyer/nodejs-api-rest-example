@@ -29,7 +29,7 @@ export const extract = (url: string): Connection => {
   };
 
   return {
-    host: connection.host,
+    host: connection.hostname,
     port: connection.port,
   };
 };

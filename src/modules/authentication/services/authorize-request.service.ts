@@ -39,7 +39,7 @@ export class AuthorizeRequestService {
     } catch {
       throw new HttpException(
         'Token expirado ou invalido.',
-        HttpStatus.UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       );
     }
 
