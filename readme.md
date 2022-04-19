@@ -13,12 +13,15 @@
 </p>
 
 ## Table of Contents
-
+- [Migração para o nestjs](#nestjs)
 - [Requisitos](#requisitos)
 - [Como executar](#como-executar)
 - [Coleção no postman](#coleção-no-postman)
 - [Docker](#docker)
 - [Migrações](#migrações)
+
+## nestjs
+O projeto esta passando por uma [migração](https://github.com/Throyer/nodejs-api-rest-example/releases/tag/0.0.1) para NestJS, clique [aqui](https://github.com/Throyer/nodejs-api-rest-example/tree/nestjs#crud-api---node-js) para acessar a branch.
 
 ## Requisitos:
 
