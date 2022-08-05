@@ -1,0 +1,12 @@
+const SERVER_PORT = Number(process.env.SERVER_PORT || process.env.PORT);
+const SWAGGER_URL = process.env.SWAGGER_URL;
+
+const TIME_EXPIRE_RATE_LIMIT_IN_MINUTES = 60;
+const MAX_REQUESTS_PER_MINUTE = Number(process.env.MAX_REQUESTS_PER_MINUTE);
+
+export {
+  SERVER_PORT,
+  SWAGGER_URL,
+  TIME_EXPIRE_RATE_LIMIT_IN_MINUTES,
+  MAX_REQUESTS_PER_MINUTE,
+};

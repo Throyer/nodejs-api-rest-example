@@ -1,0 +1,36 @@
+FROM node:16.14.2 as BUILDER
+
+WORKDIR /usr/src/app
+
+COPY ./src ./src
+COPY ./*.json ./
+
+RUN npm set cache ./.npm
+RUN --mount=type=cache,target=/usr/src/app/.npm npm i
+RUN npm run build
+RUN npm prune --production
+
+FROM node:16.14.2-alpine
+
+ENV NODE_ENV=production
+ENV SERVER_PORT=80
+ENV DOCKERIZE_VERSION=v0.6.1
+ENV DB_LOGGING_LEVEL=error
+
+WORKDIR /usr/src/app
+
+RUN apk add --no-cache openssl
+
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+COPY --from=BUILDER --chown=node:node /usr/src/app/package*.json ./
+COPY --from=BUILDER --chown=node:node /usr/src/app/dist/ ./dist/
+COPY --from=BUILDER --chown=node:node /usr/src/app/node_modules/ ./node_modules
+
+COPY ./templates/ ./templates/
+
+EXPOSE ${SERVER_PORT}
+
+CMD [ "npm", "run", "start:prod" ]

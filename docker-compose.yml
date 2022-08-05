@@ -1,13 +1,31 @@
 version: '3.3'
 
 services:
-  api:
-    build: ./
-    restart: always
-    container_name: production-api-crud-container
+  database:
+    image: postgres:13
+    restart: unless-stopped
+    container_name: nestjs-example-database
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./.volumes/database:/var/lib/postgresql/data
     network_mode: host
+  
+  api:
+    image: node:16.14.0
+    restart: unless-stopped
+    container_name: nestjs-example-api
+    working_dir: /usr/src/app
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+      - 9229:9229
     volumes:
-      - ./dist:/usr/src/app/dist
+      - ./:/usr/src/app
       - ./.volumes/logs:/root/.npm/_logs
+    command: bash -c "yarn && yarn start:debug"
+    network_mode: host

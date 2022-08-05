@@ -7,7 +7,7 @@
   <h3 align="center">CRUD API - Node Js</h3>
 
   <p align="center">
-    Docker, Typescript, Typeorm, JWT, swagger, Routing Controllers e PostgreSQL
+    Docker, Typescript, Typeorm, JWT, swagger, NestJS e PostgreSQL
     <br />
   </p>
 </p>
