@@ -4,7 +4,7 @@
     <img src="./assets/node.png" alt="Logo" height="300">
   </a>
 
-  <h3 align="center">CRUD API - Node Js</h3>
+  <h3 align="center">CRUD API - Node Js (NestJS)</h3>
 
   <p align="center">
     Docker, Typescript, Typeorm, JWT, swagger, NestJS e PostgreSQL
@@ -19,9 +19,6 @@
 - [Coleção no postman](#coleção-no-postman)
 - [Docker](#docker)
 - [Migrações](#migrações)
-
-## nestjs
-O projeto esta passando por uma [migração](https://github.com/Throyer/nodejs-api-rest-example/releases/tag/0.0.1) para NestJS, clique [aqui](https://github.com/Throyer/nodejs-api-rest-example/tree/nestjs#crud-api---node-js) para acessar a branch.
 
 ## Requisitos:
 
