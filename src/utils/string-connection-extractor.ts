@@ -4,6 +4,11 @@ type Connection = {
 };
 
 export const extract = (url: string): Connection => {
+
+  if (!url) {
+    return undefined
+  }
+
   const pattern =
     /^(?:([^:\/?#\s]+):\/{2})?(?:([^@\/?#\s]+)@)?([^\/?#\s]+)?(?:\/([^?#\s]*))?(?:[?]([^#\s]+))?\S*$/;
   const matches = url.match(pattern);

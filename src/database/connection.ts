@@ -7,6 +7,7 @@ import {
   DB_PORT,
   DB_URL,
   DB_USERNAME,
+  ENABLE_SSL,
 } from 'src/environments/database';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
@@ -29,7 +30,7 @@ const connection: Connection = {
   },
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (ENABLE_SSL) {
   connection.ssl = { rejectUnauthorized: false };
 }
 

@@ -28,10 +28,10 @@ export const started = (): void => {
   Logger.log('🎲️ database:');
 
   Logger.log(`      ╠═ logs: ${DB_LOGGING_LEVEL}`);
-  Logger.log(`      ╠═ host: ${isDev ? DB_HOST : extract(DB_URL).host}`);
+  Logger.log(`      ╠═ host: ${DB_URL ? extract(DB_URL).host : DB_HOST }`);
   Logger.log(
     `      ${isDev ? '╠' : '╚'}═ port: ${
-      isDev ? DB_PORT : extract(DB_URL).port
+      DB_URL ? extract(DB_URL).port : DB_PORT
     }`,
   );
 

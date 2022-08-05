@@ -4,7 +4,7 @@ import { SWAGGER_URL } from 'src/environments/server';
 
 export const swagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
-    .setTitle('NestJs RESTful API example')
+    .setTitle('NestJs REST API example')
     .setDescription(
       `A complete user registry, with access
       permissions, JWT token, integration and

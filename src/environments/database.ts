@@ -1,5 +1,6 @@
 import { LoggerOptions } from 'typeorm';
 
+const ENABLE_SSL = Boolean(process.env.ENABLE_SSL);
 const DB_URL = process.env.DB_URL || process.env.DATABASE_URL;
 const DB_HOST = process.env.DB_COMPOSE_HOST || process.env.DB_HOST;
 const DB_PORT = Number(process.env.DB_PORT);
@@ -11,6 +12,7 @@ const DB_LOGGING_LEVEL = process.env.DB_LOGGING_LEVEL?.split(
 ) as LoggerOptions;
 
 export {
+  ENABLE_SSL,
   DB_URL,
   DB_HOST,
   DB_PORT,
